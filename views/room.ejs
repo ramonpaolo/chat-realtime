@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room</title>
+    <style>
+      .hiden {
+        display: none;
+      }
+      ul,
+      li {
+        list-style-type: none;
+        font-size: 16px;
+        font-family: "Roboto";
+        font-weight: bold;
+      }
+      .new-user {
+        animation: newUser infinite 5s;
+        color: transparent;
+        background-image: linear-gradient(
+          120deg,
+          #f33a12,
+          #d9e60d,
+          #16f111,
+          #11dcf1,
+          #110ef1,
+          #ee0eed
+        );
+        background-size: 300%;
+        -webkit-background-clip: text;
+      }
+      @keyframes newUser {
+        0% {
+          background-position: 0%;
+        }
+        50% {
+          background-position: 100%;
+        }
+        100% {
+          background-position: 0%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Room</h1>
+      <input type="text" maxlength="6" max="6" />
+    </div>
+    <div class="hiden">
+      <input type="text" />
+      <button type="button" accesskey="Enter">Enviar</button>
+      <div class="messages">
+        <ul></ul>
+      </div>
+    </div>
+  </body>
+  <script src="/scripts/socket.io.js"></script>
+  <script>
+    const socket = new io();
+
+    let numberRoom = 0;
+    let userLogged = false;
+
+    document.getElementsByTagName("input")[0].addEventListener("input", (e) => {
+      numberRoom = e.target.value;
+      console.log(numberRoom);
+    });
+
+    document.addEventListener("keypress", function doc(e) {
+      if (numberRoom.toString().length === 6 && e.key === "Enter") {
+        userLogged = true;
+
+        socket.emit("data-" + numberRoom, {
+          message: "Usuário entrou no chat",
+        });
+        document.getElementsByTagName("div")[0].remove();
+        document.getElementsByTagName("div")[0].className = "active";
+        document.removeEventListener("keypress", doc);
+        console.log("Removendo listener");
+        addEvent();
+      }
+    });
+    let button = document.getElementsByTagName("button")[0];
+    button.addEventListener("click", (e) => {
+      console.log(e.currentTarget.getAttribute("accesskey"));
+    });
+
+    let input = "";
+
+    function addEvent() {
+      socket.on(`data-${numberRoom}`, addMessageInScreen);
+      document
+        .getElementsByTagName("input")[0]
+        .addEventListener("input", (e) => {
+          input = e.target.value;
+        });
+
+      document.addEventListener("keypress", function hotKey(e) {
+        if (
+          numberRoom.toString().length === 6 &&
+          userLogged &&
+          e.key === "Enter" &&
+          input.toString().length >= 1
+        ) {
+          sendMessage();
+        }
+      });
+    }
+
+    function sendMessage() {
+      socket.emit(`data-${numberRoom}`, {
+        message: input,
+      });
+      document.getElementsByTagName("input")[0].value = "";
+      let messages = document.getElementsByClassName("messages")[0];
+      let el = document.createElement("li");
+      el.textContent = input;
+      messages.firstElementChild.appendChild(el);
+      messages.firstElementChild.appendChild(document.createElement("br"));
+    }
+
+    function addMessageInScreen(message) {
+      //129065
+      let messages = document.getElementsByClassName("messages")[0];
+      let el = document.createElement("li");
+      el.textContent = message.message;
+      if (message.message === "Usuário entrou no chat") {
+        el.classList.add("new-user");
+      }
+      messages.firstElementChild.appendChild(el);
+      messages.firstElementChild.appendChild(document.createElement("br"));
+    }
+  </script>
+  <script>
+    let n = 129065;
+  </script>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --color-button: #2b2b2b;
+        --color-text: #676767;
+        --width-button: 240px;
+        --heigth-button: 60px;
+      }
+      body {
+        font-family: "Roboto";
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .container {
+        display: block;
+        width: 100vw;
+        height: 80vh;
+        margin-top: 10%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-bottom: 10%;
+      }
+
+      .buttons {
+        display: flex;
+        margin-top: 20%;
+        margin-left: 45%;
+        text-align: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      button {
+        width: var(--width-button);
+        height: var(--heigth-button);
+        margin-top: 12px;
+        border: 2px var(--color-button) solid;
+        border-radius: 8px;
+        background-color: var(--color-button);
+        color: white;
+        font-size: 26px;
+        font-family: "Roboto";
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      h1:first-of-type {
+        font-size: 48px;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-bottom: 0;
+        color: var(--color-button);
+      }
+
+      h2:first-of-type {
+        font-size: 32px;
+        font-weight: bold;
+        margin-top: 0;
+        color: var(--color-text);
+      }
+
+      input {
+        margin-top: 12px;
+        width: var(--width-button);
+        height: var(--heigth-button);
+        border: 2px var(--color-button) solid;
+        border-radius: 8px;
+        background-color: white;
+        color: var(--color-button);
+        font-size: 26px;
+        font-family: "Roboto";
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: 20px;
+        box-sizing: border-box;
+        padding: 0px 12px;
+        color: var(--color-text);
+      }
+    </style>
+
+    <title>Home</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to the Room Free</h1>
+      <h2>Share message and files, free</h2>
+      <div class="buttons">
+        <button type="menu">Create Room</button>
+        <button type="menu">Join Room</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    let randonNumberRoom = "";
+    let button = document.getElementsByTagName("button");
+    let buttons = document.getElementsByClassName("buttons")[0];
+    let b = document.createElement("button");
+    b.setAttribute("type", "menu");
+
+    let room = 0;
+
+    let lastClicked;
+
+    for (let x = 0; x < 2; x++) {
+      button[x].addEventListener("click", (e) => {
+        console.log(`${x}, mouse clikado`);
+        button = document.getElementsByTagName("button");
+        if (x === 0) {
+          button0(x);
+        } else {
+          button1(x);
+        }
+      });
+    }
+    function f(e) {
+      console.log(e.value);
+      room = e.value
+    }
+
+    function button0(x) {
+      if (lastClicked === 1) {
+        buttons.lastChild.remove();
+        b.textContent = "Join Room";
+        buttons.appendChild(b);
+        console.log(buttons);
+      }
+      randonNumberRoom = Math.random().toString().split(".")[1].slice(0, 6);
+      button[x].innerHTML = "";
+      buttons.children[0].remove();
+      let input = document.createElement("input");
+      input.setAttribute("value", randonNumberRoom);
+      room = randonNumberRoom
+      input.setAttribute("readonly", "");
+      buttons.insertBefore(input, button[0]);
+      lastClicked = 0;
+    }
+
+    function button1(x) {
+      if (lastClicked === 0) {
+        console.log(buttons.firstElementChild);
+        buttons.firstElementChild.remove();
+        b.textContent = "Create Room";
+        buttons.insertBefore(b, button[0]);
+        console.log(buttons);
+      }
+      button[x].innerHTML = "";
+      buttons.children[1].remove();
+      let input = document.createElement("input");
+      input.setAttribute("value", "");
+      input.setAttribute("type", "text");
+      input.setAttribute("maxlength", "6");
+      input.setAttribute("oninput", "f(this)");
+      buttons.appendChild(input);
+      lastClicked = 1;
+    }
+  </script>
+  <!-- <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js" -->
+  >
+  <script src="/scripts/socket.io.js"></script>
+  <script>
+    var socket = io();
+    document.addEventListener("keydown", enterCreateRoom);
+
+    function enterCreateRoom(e) {
+      console.log(e);
+      const { key } = e;
+      if (key === "Enter" && room.toString().length == 6)
+        socket.emit("room", {
+          uid: room
+        });
+    }
+  </script>
+</html>
