@@ -64,25 +64,51 @@
     let numberRoom = 0;
     let userLogged = false;
 
-    document.getElementsByTagName("input")[0].addEventListener("input", (e) => {
-      numberRoom = e.target.value;
-      console.log(numberRoom);
-    });
+    (async () => {
+      try {
+        numberRoom = window.location.href.split("code")[1].split("=")[1];
 
-    document.addEventListener("keypress", function doc(e) {
-      if (numberRoom.toString().length === 6 && e.key === "Enter") {
         userLogged = true;
 
         socket.emit("data-" + numberRoom, {
           message: "Usuário entrou no chat",
         });
+
         document.getElementsByTagName("div")[0].remove();
         document.getElementsByTagName("div")[0].className = "active";
-        document.removeEventListener("keypress", doc);
-        console.log("Removendo listener");
+
         addEvent();
+
+        // removedLoginRoom();
+      } catch (error) {
+        document.addEventListener("keypress", function doc(e) {
+          document
+            .getElementsByTagName("input")[0]
+            .addEventListener("input", (e) => {
+              numberRoom = e.target.value;
+              console.log(numberRoom);
+            });
+          console.log("Oi");
+          console.log(numberRoom.toString().length);
+          console.log(e.key);
+          if (numberRoom.toString().length === 6 && e.key === "Enter") {
+            userLogged = true;
+
+            socket.emit("data-" + numberRoom, {
+              message: "Usuário entrou no chat",
+            });
+
+            document.getElementsByTagName("div")[0].remove();
+            document.getElementsByTagName("div")[0].className = "active";
+            document.removeEventListener("keypress", doc);
+            console.log("Removendo listener");
+            addEvent();
+          }
+        });
+        return;
       }
-    });
+    })();
+
     let button = document.getElementsByTagName("button")[0];
     button.addEventListener("click", (e) => {
       console.log(e.currentTarget.getAttribute("accesskey"));

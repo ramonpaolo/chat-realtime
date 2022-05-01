@@ -132,7 +132,7 @@
     }
     function f(e) {
       console.log(e.value);
-      room = e.value
+      room = e.value;
     }
 
     function button0(x) {
@@ -147,7 +147,7 @@
       buttons.children[0].remove();
       let input = document.createElement("input");
       input.setAttribute("value", randonNumberRoom);
-      room = randonNumberRoom
+      room = randonNumberRoom;
       input.setAttribute("readonly", "");
       buttons.insertBefore(input, button[0]);
       lastClicked = 0;
@@ -183,10 +183,14 @@
     function enterCreateRoom(e) {
       console.log(e);
       const { key } = e;
-      if (key === "Enter" && room.toString().length == 6)
+      if (key === "Enter" && room.toString().length == 6) {
         socket.emit("room", {
-          uid: room
+          uid: room,
         });
+        window.location.assign(`${window.location.href}room?code=${room}`);
+      }
+      // console.log(window.location.href)
+      // window.location.reload()
     }
   </script>
 </html>
