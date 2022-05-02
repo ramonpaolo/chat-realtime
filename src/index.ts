@@ -3,14 +3,18 @@ import compression from "compression"
 import cors from "cors"
 import path from "path"
 import http from "http"
+import { Server } from "socket.io"
+import os from "os"
 
-const { Server } = require("socket.io")
+// const { Server } = require("socket.io")
 
 const app = express()
 
 const server = http.createServer(app)
 
-const io = new Server(server);
+const io = new Server(server, {
+    maxHttpBufferSize: 1e8
+});
 
 app.use(compression({ level: 9 }))
 app.use(cors())
@@ -61,6 +65,18 @@ app.get("/verify-room/:codeRoom", async (req, res) => {
     }))
     if (x === listRooms.length)
         res.status(200).json({ message: "not exists", numberRooms: listRooms.length })
+})
+
+app.get("/info", (_, res) => {
+    let totalMem = (((os.totalmem() / 1024) / 1024) / 1024).toFixed(2) + "GB"
+    let freeMem = (((os.freemem() / 1024) / 1024) / 1024).toFixed(2) + "GB"
+    let cores = os.cpus().length
+    let OS = os.type()
+    let platform = os.platform()
+
+    res.status(200).json({
+        totalMem, freeMem, cores, OS, platform
+    })
 })
 
 server.listen(process.env.PORT || 3000)
