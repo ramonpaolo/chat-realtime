@@ -120,8 +120,8 @@
         margin-bottom: 5vh;
       }
       img {
-        max-width: 30%;
-        max-height: 30%;
+        max-width: 400px;
+        max-height: 480px;
         border-radius: 8px;
         object-fit: cover;
       }
@@ -213,7 +213,9 @@
         message.type.toString().includes("image") ||
         message.type.toString().includes("video")
       ) {
-        let blob = new Blob([message.message]);
+        let blob = new Blob([message.message], {
+          type: message.type
+        });
         let url = URL.createObjectURL(blob);
 
         addMessageInDOM(message.type, message.message, url);
@@ -311,7 +313,9 @@
           fileReader.readAsArrayBuffer(copyFiles[x]);
 
           fileReader.onload = () => {
-            let blob = new Blob([fileReader.result]);
+            let blob = new Blob([fileReader.result], {
+              type: fileType
+            });
             let url = URL.createObjectURL(blob);
 
             addMessageInDOM(fileType, fileReader.result, url);
