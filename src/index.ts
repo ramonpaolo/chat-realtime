@@ -47,4 +47,20 @@ io.on("connection", (socket: any) => {
     })
 })
 
+app.get("/verify-room/:codeRoom", async (req, res) => {
+    if (listRooms.length === 0) return res.status(200).json({ message: "not exists", numberRooms: 0 })
+    let x = 0;
+    await Promise.all(listRooms.map((v) => {
+        console.log(v, parseInt(req.params.codeRoom))
+        console.log(v == parseInt(req.params.codeRoom))
+        if (parseInt(req.params.codeRoom) == v) {
+            console.log("Existe")
+            return res.status(200).json({ message: "exists" })
+        }
+        x++
+    }))
+    if (x === listRooms.length)
+        res.status(200).json({ message: "not exists", numberRooms: listRooms.length })
+})
+
 server.listen(process.env.PORT || 3000)

@@ -108,7 +108,9 @@
       </div>
     </div>
   </body>
+  <script src="/scripts/socket.io.js"></script>
   <script>
+    let createdRoomNow = false;
     let randonNumberRoom = "";
     let button = document.getElementsByTagName("button");
     let buttons = document.getElementsByClassName("buttons")[0];
@@ -151,6 +153,7 @@
       input.setAttribute("readonly", "");
       buttons.insertBefore(input, button[0]);
       lastClicked = 0;
+      createdRoomNow = true;
     }
 
     function button1(x) {
@@ -170,27 +173,63 @@
       input.setAttribute("oninput", "f(this)");
       buttons.appendChild(input);
       lastClicked = 1;
+      createdRoomNow = false;
+    }
+
+    var socket = io();
+    document.addEventListener("keydown", enterCreateRoom);
+
+    async function enterCreateRoom(e) {
+      const { key } = e;
+      if (key === "Enter" && room.toString().length === 6) {
+        if (createdRoomNow) {
+          fetch(`${window.location.href}verify-room/${room}`)
+            .then(async (e) => {
+              let resJson = await e.json();
+              console.log(resJson);
+              if (e.status === 200) {
+                if (resJson.message === "not exists") {
+                  socket.emit("room", {
+                    uid: room,
+                  });
+                  return window.location.assign(
+                    `${window.location.href}room?code=${room}`
+                  );
+                } else if (resJson.message === "exists") {
+                  alert("Essa sala existe")
+                }
+              }
+            })
+            .catch((error) => {
+              //Possivelmente, não tem nenhuma sala.
+              socket.emit("room", {
+                uid: room,
+              });
+              window.location.assign(
+                `${window.location.href}room?code=${room}`
+              );
+            });
+        } else {
+          fetch(`${window.location.href}verify-room/${room}`)
+            .then(async (e) => {
+              let resJson = await e.json();
+              console.log(resJson);
+              if (e.status === 200) {
+                if (resJson.message === "not exists") {
+                  alert("Essa sala não existe.");
+                } else if (resJson.message === "exists") {
+                  return window.location.assign(
+                    `${window.location.href}room?code=${room}`
+                  );
+                }
+              }
+            })
+        }
+      }
     }
   </script>
   <!-- <script
     src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js" -->
   >
-  <script src="/scripts/socket.io.js"></script>
-  <script>
-    var socket = io();
-    document.addEventListener("keydown", enterCreateRoom);
-
-    function enterCreateRoom(e) {
-      console.log(e);
-      const { key } = e;
-      if (key === "Enter" && room.toString().length == 6) {
-        socket.emit("room", {
-          uid: room,
-        });
-        window.location.assign(`${window.location.href}room?code=${room}`);
-      }
-      // console.log(window.location.href)
-      // window.location.reload()
-    }
-  </script>
+  <script></script>
 </html>
