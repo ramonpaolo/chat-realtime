@@ -1,0 +1,11 @@
+services:
+  chat-realtime:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chat_realtime
+    ports:
+      - 3001:3000
+    volumes:
+      - /app/node_modules
+      - ./:/app:rw
