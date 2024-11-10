@@ -23,6 +23,7 @@ EXPOSE 3000
 
 COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/views ./views
 
 RUN yarn --production
 
