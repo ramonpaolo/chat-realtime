@@ -16,7 +16,7 @@
     "multer": "^1.4.4",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "compression": "^1.7.5",
