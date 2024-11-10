@@ -19,11 +19,11 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "compression": "^1.7.5",
-    "cors": "^2.8.5",
-    "ejs": "^3.1.10",
-    "express": "^4.21.1",
-    "socket.io": "^4.8.1"
+    "compression": "1.7.5",
+    "cors": "2.8.5",
+    "ejs": "3.1.10",
+    "express": "4.21.1",
+    "socket.io": "4.8.1"
   },
   "engines": {
     "node": "22.x.x"
