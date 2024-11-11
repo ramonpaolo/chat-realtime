@@ -1,12 +1,9 @@
 import express from "express"
-import compression from "compression"
 import cors from "cors"
 import path from "path"
 import http from "http"
 import { Server } from "socket.io"
 import os from "os"
-
-// const { Server } = require("socket.io")
 
 const app = express()
 
@@ -16,37 +13,41 @@ const io = new Server(server, {
     maxHttpBufferSize: 1e8
 });
 
-app.use(compression({ level: 9 }))
 app.use(cors())
 app.set("view engine", "ejs")
 
-app.get("/", async (req, res) => {
-    res.status(200).render("index.ejs")
+app.get("/", async (_, res) => {
+    return res.status(200).render("index.ejs")
 })
 
 app.get("/room", (req, res) => {
-    res.status(200).render("room.ejs")
+    return res.status(200).render("room.ejs")
 })
 
 app.get("/scripts/:file", (req, res) => {
-    let p = path.join(__dirname, "..", "node_modules", "socket.io", "client-dist", req.params.file)
-    res.status(200).sendFile(p)
+    const rootDir = path.resolve(__dirname, "..", "node_modules", "socket.io", "client-dist");
+    const requestedFile = path.resolve(rootDir, req.params.file);
+
+    if(!requestedFile.startsWith(rootDir)) {
+        return res.status(401).json({
+            status: 'failed',
+            message: 'cannot access another files from server',
+        })
+    }
+
+    return res.status(200).sendFile(requestedFile)
 })
 
 const listRooms = new Array()
 
 io.on("connection", (socket: any) => {
-    console.log("Conexão")
     listRooms.map((v) => {
         socket.on(`data-${v}`, (data: any) => {
-            console.log("Sala:", v, " mandou a seguinte mensagem:", data)
             socket.broadcast.emit(`data-${v}`, data)
-            // socket.emit(`data-${v}`, data)
         })
     })
+
     socket.on("room", (data: any) => {
-        console.log("Sala:", data.uid, "criada com sucesso")
-        console.log(listRooms.length + 1, "salas no total.")
         listRooms.push(data.uid)
     })
 })
@@ -54,17 +55,17 @@ io.on("connection", (socket: any) => {
 app.get("/verify-room/:codeRoom", async (req, res) => {
     if (listRooms.length === 0) return res.status(200).json({ message: "not exists", numberRooms: 0 })
     let x = 0;
+    
     await Promise.all(listRooms.map((v) => {
-        console.log(v, parseInt(req.params.codeRoom))
-        console.log(v == parseInt(req.params.codeRoom))
-        if (parseInt(req.params.codeRoom) == v) {
-            console.log("Existe")
+        if (req.params.codeRoom == v) {
             return res.status(200).json({ message: "exists" })
         }
+
         x++
     }))
+
     if (x === listRooms.length)
-        res.status(200).json({ message: "not exists", numberRooms: listRooms.length })
+        return res.status(200).json({ message: "not exists", numberRooms: listRooms.length })
 })
 
 app.get("/info", (_, res) => {
@@ -74,7 +75,7 @@ app.get("/info", (_, res) => {
     let OS = os.type()
     let platform = os.platform()
 
-    res.status(200).json({
+    return res.status(200).json({
         totalMem, freeMem, cores, OS, platform
     })
 })
