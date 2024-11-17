@@ -10,7 +10,7 @@ const app = express()
 const server = http.createServer(app)
 
 const io = new Server(server, {
-    maxHttpBufferSize: 1e8
+    maxHttpBufferSize: 1e10
 });
 
 app.use(cors())
