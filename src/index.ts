@@ -40,15 +40,18 @@ app.get("/scripts/:file", (req, res) => {
 
 const listRooms = new Array()
 
-io.on("connection", (socket: any) => {
+io.on("connection", (socket) => {
     listRooms.map((v) => {
         socket.on(`data-${v}`, (data: any) => {
+            console.log('Data received: ', data)
+    
             socket.broadcast.emit(`data-${v}`, data)
         })
     })
-
-    socket.on("room", (data: any) => {
+    
+    socket.on("room", (data) => {
         listRooms.push(data.uid)
+        console.log('Created room')
     })
 })
 
