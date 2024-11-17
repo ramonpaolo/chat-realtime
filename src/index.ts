@@ -13,6 +13,8 @@ const io = new Server(server, {
     maxHttpBufferSize: 1e10
 });
 
+const listRooms = new Array();
+
 app.use(cors())
 app.set("view engine", "ejs")
 
@@ -20,15 +22,33 @@ app.get("/", async (_, res) => {
     return res.status(200).render("index.ejs")
 })
 
-app.get("/room", (req, res) => {
+app.get("/room/:id", (req, res) => {
     return res.status(200).render("room.ejs")
+})
+
+app.post("/create-room", (req, res) => {
+    console.log('Creating room...')
+
+    const idRoom = crypto.randomUUID()
+
+    listRooms.push(idRoom)
+
+    console.log('Created room with success!')
+
+    return res.status(201).json({
+        status: 'success',
+        message: 'create room with success',
+        data: {
+            id: idRoom,
+        },
+    })
 })
 
 app.get("/scripts/:file", (req, res) => {
     const rootDir = path.resolve(__dirname, "..", "node_modules", "socket.io", "client-dist");
     const requestedFile = path.resolve(rootDir, req.params.file);
 
-    if(!requestedFile.startsWith(rootDir)) {
+    if (!requestedFile.startsWith(rootDir)) {
         return res.status(401).json({
             status: 'failed',
             message: 'cannot access another files from server',
@@ -38,37 +58,44 @@ app.get("/scripts/:file", (req, res) => {
     return res.status(200).sendFile(requestedFile)
 })
 
-const listRooms = new Array()
+app.get("/assets/:file", (req, res) => {
+    const rootDir = path.resolve(__dirname, "..", "views", "assets");
+    const requestedFile = path.resolve(rootDir, req.params.file);
+
+    if (!requestedFile.startsWith(rootDir)) {
+        return res.status(401).json({
+            status: 'failed',
+            message: 'cannot access another files from server',
+        })
+    }
+
+    return res.status(200).sendFile(requestedFile)
+})
 
 io.on("connection", (socket) => {
     listRooms.map((v) => {
-        socket.on(`data-${v}`, (data: any) => {
+        socket.on(`room-${v}`, (data: { message: string, type: string, name?: string, }) => {
             console.log('Data received: ', data)
-    
+
             socket.broadcast.emit(`data-${v}`, data)
         })
     })
-    
-    socket.on("room", (data) => {
-        listRooms.push(data.uid)
+
+    socket.on("room", (data: { id: string; }) => {
+        listRooms.push(data.id)
         console.log('Created room')
     })
 })
 
-app.get("/verify-room/:codeRoom", async (req, res) => {
-    if (listRooms.length === 0) return res.status(200).json({ message: "not exists", numberRooms: 0 })
-    let x = 0;
-    
-    await Promise.all(listRooms.map((v) => {
-        if (req.params.codeRoom == v) {
-            return res.status(200).json({ message: "exists" })
-        }
+app.get("/verify-room/:id", async (req, res) => {
+    const idRoom = req.params.id
 
-        x++
+    await Promise.all(listRooms.map(_idRoom => {
+        if (idRoom === _idRoom)
+            return res.status(200).json({ message: "exists" })
     }))
 
-    if (x === listRooms.length)
-        return res.status(200).json({ message: "not exists", numberRooms: listRooms.length })
+    return res.status(200).json({ message: "not exists" })
 })
 
 app.get("/info", (_, res) => {

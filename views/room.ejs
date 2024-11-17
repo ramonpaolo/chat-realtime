@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Room</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,7 +13,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
     rel="stylesheet" />
-
   <style>
     * {
       box-sizing: border-box;
@@ -21,8 +21,14 @@
       font-family: "Roboto";
     }
 
+    p {
+      font-size: 14;
+      color: gray;
+    }
+
     body {
       margin: 0;
+      background-color: #f5f5f5;
     }
 
     .hiden {
@@ -69,7 +75,7 @@
     .field-input {
       width: 95%;
       height: 5vh;
-      background-color: white;
+      background-color: #f5f5f5;
       text-align: center;
       justify-content: center;
       position: fixed;
@@ -110,7 +116,7 @@
       padding: 0px;
       padding-top: 11px;
       max-width: 120px;
-      border-radius: 100%;
+      border-radius: 8px;
       text-align: center;
       justify-content: center;
       cursor: pointer;
@@ -142,20 +148,16 @@
 
 <body>
   <div>
-    <h1>Room</h1>
-    <input type="text" maxlength="6" max="6" />
-  </div>
-  <div class="hiden">
-    <div class="messages">
+    <div id="messages" class="messages">
       <ul></ul>
     </div>
     <div class="field-input">
-      <input type="text" placeholder="Mensagem aqui" />
+      <input id="input" autofocus type="text" placeholder="Mensagem..." />
       <label for="input-file">
-        Files
+        <img src="/assets/attach_file.svg" alt="Icon of file" width="42px" height="42px">
         <input class="hiden" type="file" multiple id="input-file" />
       </label>
-      <button type="button" accesskey="Enter" onclick="sendMessage();">Enviar</button>
+      <button id="send-message" type="button" accesskey="Enter">Enviar</button>
     </div>
   </div>
 </body>
@@ -163,152 +165,173 @@
 <script>
   const socket = new io();
 
-  let numberRoom = 0;
-  let userLogged = false;
+  const idRoom = window.location.pathname.split('room/').pop()
+
   let files = [];
+  let input = null;
 
-  (async () => {
-    try {
-      numberRoom = window.location.href.split("code")[1].split("=")[1];
+  const name = prompt('Como deseja o seu nome no chat-anonymous?', 'Anônimo')
 
-      userLogged = true;
-
-      socket.emit(`data-${numberRoom}`, {
-        message: "Usuário entrou no chat",
-        type: "text",
-      });
-
-      document.getElementsByTagName("div")[0].remove();
-      document.getElementsByTagName("div")[0].className = "active";
-
-      addEvent();
-
-      // removedLoginRoom();
-    } catch (error) {
-      document.addEventListener("keypress", function doc(e) {
-        document
-          .getElementsByTagName("input")[0]
-          .addEventListener("input", (e) => {
-            numberRoom = e.target.value;
-          });
-        if (numberRoom.toString().length === 6 && e.key === "Enter") {
-          userLogged = true;
-
-          socket.emit(`data-${numberRoom}`, {
-            message: "Usuário entrou no chat",
-            type: "text",
-          });
-
-          document.getElementsByTagName("div")[0].remove();
-          document.getElementsByTagName("div")[0].className = "active";
-          document.removeEventListener("keypress", doc);
-          addEvent();
-        }
-      });
-      return;
-    }
-  })();
-
-  let button = document.getElementsByTagName("button")[0];
-  button.addEventListener("click", (e) => {
-    console.log(e.currentTarget.getAttribute("accesskey"));
+  socket.emit(`room-${idRoom}`, {
+    message: `Usuário ${name} entrou no chat`,
+    type: "text",
+    user: name,
   });
 
-  let input = "";
+  const sendMessage = () => {
+    console.log('sending message...')
 
-  function receivingMessage(message) {
-    if (
-      message.type.toString().includes("image") ||
-      message.type.toString().includes("video")
-    ) {
-      console.log('Received a file!')
+    if (files.length >= 1)
+      return sendMediaMessage()
 
-      const blob = new Blob([message.message], {
-        type: message.type
-      });
-
-      const url = URL.createObjectURL(blob);
-      console.log('URL File: ', url)
-
-      addMessageInDOM(message.type, message.message, url);
-
-      return;
-    }
-    addMessageInDOM("text", message.message, "");
+    if (input)
+      return sendTextMessage();
   }
 
-  function addEvent() {
-    socket.on(`data-${numberRoom}`, receivingMessage);
-    document
-      .getElementsByTagName("input")[0]
-      .addEventListener("input", (e) => {
-        input = e.target.value;
-      });
+  /**
+   * Function to receive the data(message) from the web server
+   * @param {{message: string, type: string, name?: string, user: string}} message
+   */
+  const receiveMessage = (message) => {
+    const typeMessage = `${message.type}`;
 
-    document.getElementById("input-file").addEventListener("change", (e) => {
-      files = e.currentTarget.files;
-    });
+    console.log('Received message!', typeMessage)
 
-    document.addEventListener("keypress", function hotKey(e) {
-      if (
-        numberRoom.toString().length === 6 &&
-        userLogged &&
-        e.key === "Enter"
-      )
-        sendMessage();
-    });
+    if (typeMessage.includes("image") || typeMessage.includes("video"))
+      return receiveMediaMessage(message);
+
+    return receivedTextMessage(message)
   }
 
-  async function sendMessage() {
-    if (input === "" || input.length === 0) {
-      messageMedia();
-      return;
-    }
+  /**
+   * Function to receive the data(media) from the web server
+   * @param {{message: string, type: string, name: string, user: string}} message
+   */
+  const receiveMediaMessage = (message) => {
+    const blob = new Blob([message.message], {
+      type: message.type,
+    });
 
-    socket.emit(`data-${numberRoom}`, {
+    const url = URL.createObjectURL(blob);
+
+    return addMessageInDOM(message.type, message.message, url, message.user);
+  }
+
+  /**
+   * Function to receive the data(text) from the web server
+   * @param {{message: string, type: string, name: string, user: string}} message
+   */
+  const receivedTextMessage = (message) => {
+    return addMessageInDOM(message.type, message.message, "", message.user);
+  }
+
+  const sendTextMessage = () => {
+    socket.emit(`room-${idRoom}`, {
       message: input,
       type: "text",
+      user: name,
     });
 
-    addMessageInDOM("text", input, "", 'local');
+    console.log('send message with success!')
 
-    document.getElementsByTagName("input")[0].value = "";
-    input = "";
+    addMessageInDOM("text", input, "", 'Eu');
+
+    document.getElementById("input").value = "";
+    input = null;
   }
 
-  function addMessageInDOM(type, message, url, origin) {
-    if (origin === 'local')
-      document.getElementsByTagName("input")[0].value = "";
+  const sendMediaMessage = () => {
+    const copyFiles = Array.from(files);
 
-    let messages = document.getElementsByClassName("messages")[0];
-    let el = document.createElement("li");
+    files = [];
+
+    copyFiles.forEach(file => {
+      const fileName = file.name;
+      const fileType = file.type;
+
+      const fileReader = new FileReader();
+
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = () => {
+        const blob = new Blob([fileReader.result], {
+          type: fileType
+        });
+        const url = URL.createObjectURL(blob);
+
+        addMessageInDOM(fileType, fileReader.result, url, 'Eu');
+
+        socket.emit(`room-${idRoom}`, {
+          message: fileReader.result,
+          name: fileName,
+          type: fileType,
+          user: name,
+        });
+      };
+    })
+
+    console.log('send message with success!')
+  }
+
+  const addMessageInDOM = (type, message, url, origin) => {
+    if (origin === 'Eu')
+      document.getElementById("input").value = "";
+
+    const messages = document.getElementById("messages");
+    const el = document.createElement("li");
+
+    const divMessageUser = document.createElement('div')
+
+    const nameUser = document.createElement('h3')
+    nameUser.textContent = origin
+
+    divMessageUser.appendChild(nameUser)
 
     if (type === "text") {
-      el.textContent = message;
-      if (message === "Usuário entrou no chat") el.classList.add("new-user");
-    } else if (type === "video/mp4") {
+      const elText = document.createElement('p')
+
+      elText.textContent = message;
+
+      if (message === "Usuário entrou no chat")
+        elText.classList.add("new-user");
+
+      divMessageUser.appendChild(elText)
+
+      el.appendChild(divMessageUser);
+    }
+
+    if (type.includes('mp4')) {
       const elVideo = document.createElement("video");
 
       elVideo.setAttribute("src", url);
       elVideo.setAttribute("controls", "");
+
+      divMessageUser.appendChild(elVideo)
+
       el.appendChild(elVideo);
-    } else if (
-      type === "image/png" ||
-      type === "image/webp" ||
-      type === "image/jpeg"
+    }
+
+    if (
+      type.includes('png') ||
+      type.includes('webp') ||
+      type.includes('jpeg')
     ) {
       const elImage = document.createElement("img");
 
       elImage.setAttribute("src", url);
-      el.appendChild(elImage);
+
+      divMessageUser.appendChild(elImage)
+
+      el.appendChild(divMessageUser);
     }
 
     messages.firstElementChild.appendChild(el);
     messages.firstElementChild.appendChild(document.createElement("br"));
-    setTimeout(() => scrollToEnd(), 100);
+
+    scrollToEnd()
   }
 
-  function scrollToEnd() {
+  const scrollToEnd = () => {
     document
       .getElementsByTagName("html")[0]
       .scrollTo(
@@ -317,37 +340,34 @@
       );
   }
 
-  function messageMedia() {
-    const copyFiles = files;
+  const setUpChat = () => {
+    socket.on(`data-${idRoom}`, receiveMessage);
 
-    files = [];
+    const inputText = document.getElementById("input")
+    const inputMedia = document.getElementById("input-file")
 
-    if (copyFiles.length >= 1) {
-      for (var x = copyFiles.length - 1; x >= 0; x--) {
-        let fileName = copyFiles[x].name;
-        let fileType = copyFiles[x].type;
+    const buttonSendMessage = document.getElementById("send-message")
 
-        let fileReader = new FileReader();
+    inputText.addEventListener("input", e => {
+      input = e.target.value;
+    });
 
-        fileReader.readAsArrayBuffer(copyFiles[x]);
+    inputMedia.addEventListener("change", e => {
+      files = e.currentTarget.files;
+    });
 
-        fileReader.onload = () => {
-          const blob = new Blob([fileReader.result], {
-            type: fileType
-          });
-          const url = URL.createObjectURL(blob);
+    buttonSendMessage.addEventListener("click", e => {
+      return sendMessage()
+    });
 
-          addMessageInDOM(fileType, fileReader.result, url);
-
-          socket.emit(`data-${numberRoom}`, {
-            message: fileReader.result,
-            name: fileName,
-            type: fileType,
-          });
-        };
-      }
-    }
+    document.addEventListener("keypress", e => {
+      if (e.key === "Enter")
+        return sendMessage();
+    });
   }
+
+  setUpChat();
+
 </script>
 
 </html>
