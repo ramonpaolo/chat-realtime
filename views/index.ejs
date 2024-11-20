@@ -1,238 +1,160 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
 
-    <style>
-      :root {
-        --color-button: #2b2b2b;
-        --color-text: #676767;
-        --width-button: 240px;
-        --heigth-button: 60px;
-      }
-      body {
-        font-family: "Roboto";
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+  <meta name="description" content="Join to realtime-chat for free, to share files and messages anonymous" />
+  <meta name="keywords" content="realtime-chat chat, anonymous, free share, communities" />
 
-        overflow: hidden;
-      }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      .container {
-        display: block;
-        width: 100vw;
-        height: 80vh;
-        margin-top: 10%;
-        margin-left: 10%;
-        margin-right: 10%;
-        margin-bottom: 10%;
-      }
+  <meta name="author" content="Ramon Paolo Maram" />
+  <meta name="publisher" content="Chat Realtime(github.com/ramonpaolo/chat-realtime)" />
 
-      .buttons {
-        display: flex;
-        margin-top: 20%;
-        margin-left: 45%;
-        text-align: center;
-        justify-content: center;
-        flex-direction: column;
-      }
+  <meta name="image_src" content="/assets/chat-room-logo.png" />
 
-      button {
-        width: var(--width-button);
-        height: var(--heigth-button);
-        margin-top: 12px;
-        border: 2px var(--color-button) solid;
-        border-radius: 8px;
-        background-color: var(--color-button);
-        color: white;
-        font-size: 26px;
-        font-family: "Roboto";
-        font-weight: bold;
-        cursor: pointer;
-      }
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Real-time Chat" />
+  <meta name="twitter:description" content="Join to realtime-chat for free, to share files and messages anonymous" />
 
-      h1:first-of-type {
-        font-size: 48px;
-        font-weight: bold;
-        text-decoration: underline;
-        margin-bottom: 0;
-        color: var(--color-button);
-      }
+  <meta name="og:title" content="Real-time Chat" />
+  <meta name="og:description" content="Join to realtime-chat for free, to share files and messages anonymous" />
+  <meta name="og:image" content="/assets/chat-room-logo.png" />
 
-      h2:first-of-type {
-        font-size: 32px;
-        font-weight: bold;
-        margin-top: 0;
-        color: var(--color-text);
-      }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-      input {
-        margin-top: 12px;
-        width: var(--width-button);
-        height: var(--heigth-button);
-        border: 2px var(--color-button) solid;
-        border-radius: 8px;
-        background-color: white;
-        color: var(--color-button);
-        font-size: 26px;
-        font-family: "Roboto";
-        font-weight: bold;
-        cursor: pointer;
-        letter-spacing: 20px;
-        box-sizing: border-box;
-        padding: 0px 12px;
-        color: var(--color-text);
-      }
-    </style>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet" />
 
-    <title>Home</title>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Welcome to the Room Free</h1>
-      <h2>Share message and files, free</h2>
-      <div class="buttons">
-        <button type="menu">Create Room</button>
-        <button type="menu">Join Room</button>
-      </div>
+  <style>
+    :root {
+      --color-button: #2b2b2b;
+      --color-text: #676767;
+      --width-button: 240px;
+      --heigth-button: 60px;
+    }
+
+    body {
+      font-family: "Roboto";
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+      overflow: hidden;
+    }
+
+    .container {
+      display: block;
+      width: 100vw;
+      height: 80vh;
+      margin-top: 10%;
+      margin-left: 10%;
+      margin-right: 10%;
+      margin-bottom: 10%;
+    }
+
+    .buttons {
+      display: flex;
+      margin-top: 20%;
+      margin-left: 45%;
+      text-align: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    button {
+      width: var(--width-button);
+      height: var(--heigth-button);
+      margin-top: 12px;
+      border: 2px var(--color-button) solid;
+      border-radius: 8px;
+      background-color: var(--color-button);
+      color: white;
+      font-size: 26px;
+      font-family: "Roboto";
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    h1:first-of-type {
+      font-size: 48px;
+      font-weight: bold;
+      text-decoration: underline;
+      margin-bottom: 0;
+      color: var(--color-button);
+    }
+
+    h2:first-of-type {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 0;
+      color: var(--color-text);
+    }
+
+    input {
+      margin-top: 12px;
+      width: var(--width-button);
+      height: var(--heigth-button);
+      border: 2px var(--color-button) solid;
+      border-radius: 8px;
+      background-color: white;
+      color: var(--color-button);
+      font-size: 26px;
+      font-family: "Roboto";
+      font-weight: bold;
+      cursor: pointer;
+      letter-spacing: 20px;
+      box-sizing: border-box;
+      padding: 0px 12px;
+      color: var(--color-text);
+    }
+  </style>
+
+  <title>Home</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Welcome to the Room Free</h1>
+    <h2>Share message and files, free</h2>
+    <div class="buttons">
+      <button id="create-room" type="menu" onclick="createRoom()">Create Room</button>
     </div>
-  </body>
-  <script src="/scripts/socket.io.js"></script>
-  <script>
-    let createdRoomNow = false;
-    let randonNumberRoom = "";
-    let button = document.getElementsByTagName("button");
-    let buttons = document.getElementsByClassName("buttons")[0];
-    let b = document.createElement("button");
-    b.setAttribute("type", "menu");
+  </div>
+</body>
+<script>
+  const BASE_URL = window.location.hostname
 
-    let room = 0;
+  const createRoom = async () => {
+    console.log('Creating room...')
 
-    let lastClicked;
+    const response = await fetch(`/create-room`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
 
-    for (let x = 0; x < 2; x++) {
-      button[x].addEventListener("click", (e) => {
-        console.log(`${x}, mouse clikado`);
-        button = document.getElementsByTagName("button");
-        if (x === 0) {
-          button0(x);
-        } else {
-          button1(x);
-        }
-      });
-    }
-    function f(e) {
-      console.log(e.value);
-      room = e.value;
+    if (response.status === 201) {
+      console.log('Room create with success!')
+
+      const { data } = await response.json()
+
+      const idRoom = data.id;
+
+      return window.location.assign(
+        `/room/${idRoom}`
+      );
     }
 
-    function button0(x) {
-      if (lastClicked === 1) {
-        buttons.lastChild.remove();
-        b.textContent = "Join Room";
-        buttons.appendChild(b);
-        console.log(buttons);
-      }
-      randonNumberRoom = Math.random().toString().split(".")[1].slice(0, 6);
-      button[x].innerHTML = "";
-      buttons.children[0].remove();
-      let input = document.createElement("input");
-      input.setAttribute("value", randonNumberRoom);
-      room = randonNumberRoom;
-      input.setAttribute("readonly", "");
-      buttons.insertBefore(input, button[0]);
-      lastClicked = 0;
-      createdRoomNow = true;
-    }
+    console.error('Room not created!')
+  }
+</script>
 
-    function button1(x) {
-      if (lastClicked === 0) {
-        console.log(buttons.firstElementChild);
-        buttons.firstElementChild.remove();
-        b.textContent = "Create Room";
-        buttons.insertBefore(b, button[0]);
-        console.log(buttons);
-      }
-      button[x].innerHTML = "";
-      buttons.children[1].remove();
-      let input = document.createElement("input");
-      input.setAttribute("value", "");
-      input.setAttribute("type", "text");
-      input.setAttribute("maxlength", "6");
-      input.setAttribute("oninput", "f(this)");
-      buttons.appendChild(input);
-      lastClicked = 1;
-      createdRoomNow = false;
-    }
-
-    var socket = io();
-    document.addEventListener("keydown", enterCreateRoom);
-
-    async function enterCreateRoom(e) {
-      const { key } = e;
-      if (key === "Enter" && room.toString().length === 6) {
-        if (createdRoomNow) {
-          fetch(`${window.location.href}verify-room/${room}`)
-            .then(async (e) => {
-              let resJson = await e.json();
-              console.log(resJson);
-              if (e.status === 200) {
-                if (resJson.message === "not exists") {
-                  socket.emit("room", {
-                    uid: room,
-                  });
-                  return window.location.assign(
-                    `${window.location.href}room?code=${room}`
-                  );
-                } else if (resJson.message === "exists") {
-                  alert("Essa sala existe")
-                }
-              }
-            })
-            .catch((error) => {
-              //Possivelmente, não tem nenhuma sala.
-              socket.emit("room", {
-                uid: room,
-              });
-              window.location.assign(
-                `${window.location.href}room?code=${room}`
-              );
-            });
-        } else {
-          fetch(`${window.location.href}verify-room/${room}`)
-            .then(async (e) => {
-              let resJson = await e.json();
-              console.log(resJson);
-              if (e.status === 200) {
-                if (resJson.message === "not exists") {
-                  alert("Essa sala não existe.");
-                } else if (resJson.message === "exists") {
-                  return window.location.assign(
-                    `${window.location.href}room?code=${room}`
-                  );
-                }
-              }
-            })
-        }
-      }
-    }
-  </script>
-  <!-- <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js" -->
-  >
-  <script></script>
 </html>
