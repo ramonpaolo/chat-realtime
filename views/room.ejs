@@ -1,372 +1,187 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4eee2" />
+  <meta name="description" content="Sala de chat anônima e temporária do chat realtime." />
+  <meta name="robots" content="noindex, nofollow" />
 
-  <title>Room</title>
+  <title>sala <%= roomId %> — chat realtime</title>
 
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Roboto";
-    }
-
-    p {
-      font-size: 14;
-      color: gray;
-    }
-
-    body {
-      margin: 0;
-      background-color: #f5f5f5;
-    }
-
-    .hiden {
-      display: none;
-    }
-
-    ul,
-    li {
-      list-style-type: none;
-      font-size: 16px;
-      font-family: "Roboto";
-      font-weight: bold;
-    }
-
-    .new-user {
-      animation: newUser infinite 5s;
-      color: transparent;
-      background-image: linear-gradient(120deg,
-          #f33a12,
-          #d9e60d,
-          #16f111,
-          #11dcf1,
-          #110ef1,
-          #ee0eed);
-      background-size: 300%;
-      -webkit-background-clip: text;
-      background-clip: text;
-    }
-
-    @keyframes newUser {
-      0% {
-        background-position: 0%;
-      }
-
-      50% {
-        background-position: 100%;
-      }
-
-      100% {
-        background-position: 0%;
-      }
-    }
-
-    .field-input {
-      width: 95%;
-      height: 5vh;
-      background-color: #f5f5f5;
-      text-align: center;
-      justify-content: center;
-      position: fixed;
-      display: block;
-      bottom: 6px;
-      margin-left: 3%;
-    }
-
-    input {
-      width: 40%;
-      height: 100%;
-      border: 2px #2b2b2b solid;
-      border-radius: 6px;
-      padding-left: 12px;
-    }
-
-    button {
-      width: 19%;
-      height: 100%;
-      max-width: 120px;
-      margin: 0;
-      padding: 0;
-      background-color: white;
-      border: 2px #2b2b2b solid;
-      border-radius: 12px;
-      cursor: pointer;
-      color: #2b2b2b;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    label {
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      border: 2px #2b2b2b solid;
-      margin: 0px;
-      padding: 0px;
-      padding-top: 11px;
-      max-width: 120px;
-      border-radius: 8px;
-      text-align: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .messages {
-      width: 90%;
-      margin-left: 10%;
-      margin-top: 32px;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      margin-bottom: 5vh;
-    }
-
-    img {
-      max-width: 400px;
-      max-height: 480px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
-
-    video {
-      max-width: 640px;
-      max-height: 360px;
-      object-fit: cover;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css?v=5" />
 </head>
 
-<body>
-  <div>
-    <div id="messages" class="messages">
-      <ul></ul>
-    </div>
-    <div class="field-input">
-      <input id="input" autofocus type="text" placeholder="Mensagem..." />
-      <label for="input-file">
-        <img src="/assets/attach_file.svg" alt="Icon of file" width="12px" height="12px">
-        <input class="hiden" type="file" multiple id="input-file" />
-      </label>
-      <button id="send-message" type="button" accesskey="Enter">Enviar</button>
+<body class="chat-page" data-room="<%= roomId %>">
+  <%- include("partials/icons") %>
+
+  <div class="chat-shell">
+    <aside id="sidebar" class="chat-sidebar" aria-label="Informações da sala">
+      <div class="sidebar-head">
+        <a class="brand brand-light" href="/" aria-label="chat realtime, início">
+          <img src="/logo.svg" alt="" class="brand-mark" width="32" height="32" />
+          <span class="brand-name">chat realtime</span>
+        </a>
+        <button type="button" id="close-sidebar" class="icon-btn sidebar-close" aria-label="Fechar menu">
+          <svg class="icon"><use href="#icon-close"></use></svg>
+        </button>
+      </div>
+
+      <section class="room-card" aria-labelledby="room-card-title">
+        <span class="room-card-label" id="room-card-title">sala atual</span>
+        <div class="room-card-code">
+          <code id="sidebar-room-code"><%= roomId %></code>
+          <button type="button" id="copy-room" class="icon-btn icon-btn-sm" aria-label="Copiar código da sala" title="Copiar código">
+            <svg class="icon icon-sm"><use href="#icon-copy"></use></svg>
+          </button>
+        </div>
+        <p>manda o link pra alguém. quem entrar, entra na conversa.</p>
+      </section>
+
+      <section class="members-section" aria-labelledby="members-title">
+        <div class="section-line">
+          <h2 id="members-title">
+            <svg class="icon icon-xs"><use href="#icon-users"></use></svg>
+            quem tá aqui
+          </h2>
+          <span id="member-count" class="count-badge">0</span>
+        </div>
+        <ul id="member-list" class="member-list" aria-live="polite"></ul>
+      </section>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="sidebar-note">
+        <svg class="icon icon-sm"><use href="#icon-lock"></use></svg>
+        <p>as mensagens ficam na memória. a sala some depois de 1 hora vazia.</p>
+      </div>
+
+      <div class="sidebar-foot">
+        <button type="button" id="leave-room" class="btn btn-ghost btn-block">
+          <svg class="icon icon-sm"><use href="#icon-close"></use></svg>
+          Sair da sala
+        </button>
+        <a class="sidebar-hosted" href="https://zenifra.com" target="_blank" rel="noopener noreferrer">hospedado na Zenifra</a>
+      </div>
+    </aside>
+
+    <div id="sidebar-backdrop" class="sidebar-backdrop is-hidden"></div>
+
+    <main class="chat-main">
+      <header class="chat-header">
+        <button type="button" id="open-sidebar" class="icon-btn mobile-menu" aria-label="Abrir menu da sala">
+          <svg class="icon"><use href="#icon-menu"></use></svg>
+        </button>
+
+        <div class="chat-heading">
+          <span class="chat-kicker">sala</span>
+          <h1>#<span id="header-room-code"><%= roomId %></span></h1>
+        </div>
+
+        <div class="chat-header-actions">
+          <span id="connection-pill" class="connection-pill is-connecting">
+            <span class="connection-dot"></span>
+            <span id="connection-label">conectando...</span>
+          </span>
+          <button type="button" id="copy-link" class="icon-btn" aria-label="Copiar link da sala" title="Copiar link">
+            <svg class="icon"><use href="#icon-copy"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <div id="connection-banner" class="connection-banner is-hidden" role="status">
+        <svg class="icon icon-sm"><use href="#icon-alert"></use></svg>
+        <span id="connection-banner-text">a conexão caiu. tentando de novo...</span>
+        <button type="button" id="reconnect-button" class="btn btn-soft btn-sm">
+          <svg class="icon icon-xs"><use href="#icon-refresh"></use></svg>
+          Reconectar
+        </button>
+      </div>
+
+      <section id="messages" class="messages" aria-label="Mensagens da sala" role="log" aria-live="polite">
+        <div id="empty-state" class="empty-state">
+          <span class="empty-icon">
+            <svg class="icon"><use href="#icon-chat"></use></svg>
+          </span>
+          <h2>Ninguém falou nada ainda.</h2>
+          <p>Manda a primeira e quebra o gelo.</p>
+          <button type="button" id="empty-copy" class="btn btn-soft btn-sm">
+            <svg class="icon icon-xs"><use href="#icon-copy"></use></svg>
+            Copiar link da sala
+          </button>
+        </div>
+        <div id="messages-list" class="messages-list"></div>
+      </section>
+
+      <button type="button" id="scroll-bottom" class="scroll-bottom">
+        novas mensagens
+        <svg class="icon icon-sm"><use href="#icon-arrow-down"></use></svg>
+      </button>
+
+      <div id="typing-indicator" class="typing-indicator" aria-live="polite"></div>
+
+      <footer class="composer-area">
+        <div id="file-chips" class="file-chips"></div>
+
+        <form id="composer-form" class="composer">
+          <label class="attach-btn" for="file-input" title="Anexar arquivo" aria-label="Anexar arquivo">
+            <svg class="icon"><use href="#icon-paperclip"></use></svg>
+            <input id="file-input" type="file" multiple hidden
+              accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,application/pdf,text/plain" />
+          </label>
+
+          <textarea id="message-input" rows="1" maxlength="1000" placeholder="Manda uma mensagem..." aria-label="Mensagem" disabled></textarea>
+
+          <button type="submit" id="send-button" class="send-btn" disabled aria-label="Mandar mensagem" title="Mandar (Enter)">
+            <svg class="icon"><use href="#icon-send"></use></svg>
+          </button>
+        </form>
+
+        <div class="composer-meta">
+          <span id="char-count">0 / 1000</span>
+          <span class="composer-hint">Enter manda · Shift + Enter quebra linha</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <div id="join-overlay" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="join-title">
+    <div class="modal-card">
+      <img src="/logo.svg" alt="" class="modal-logo" width="44" height="44" />
+      <span class="eyebrow">sala <code><%= roomId %></code></span>
+      <h2 id="join-title">Entra na conversa</h2>
+      <p id="join-subtitle" class="modal-subtitle">Como você quer aparecer?</p>
+
+      <form id="join-form" novalidate>
+        <label class="field">
+          <span>Seu nome</span>
+          <input id="join-name" type="text" maxlength="24" autocomplete="nickname" placeholder="Como te chamam?" />
+        </label>
+        <p id="join-error" class="form-error is-hidden" role="alert"></p>
+        <button type="submit" id="join-submit" class="btn btn-primary btn-block">
+          <span class="btn-label" id="join-submit-label">Entrar</span>
+          <span class="btn-spinner is-hidden" aria-hidden="true"></span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+      </form>
+
+      <a class="modal-back" href="/">voltar pro início</a>
     </div>
   </div>
+
+  <div id="toast-stack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
+
+  <noscript>
+    <div class="noscript-message">O chat realtime precisa de JavaScript para funcionar.</div>
+  </noscript>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/room.js?v=5" defer></script>
 </body>
-<script src="/scripts/socket.io.js"></script>
-<script>
-  const socket = new io();
-
-  const idRoom = window.location.pathname.split('room/').pop()
-
-  let files = [];
-  let input = null;
-
-  const name = prompt('Como deseja o seu nome no chat-anonymous?', 'Anônimo')
-
-  socket.emit(`room-${idRoom}`, {
-    message: `Usuário ${name} entrou no chat`,
-    type: "text",
-    user: name,
-  });
-
-  const sendMessage = () => {
-    console.log('sending message...')
-
-    if (files.length >= 1)
-      return sendMediaMessage()
-
-    if (input)
-      return sendTextMessage();
-  }
-
-  /**
-   * Function to receive the data(message) from the web server
-   * @param {{message: string, type: string, name?: string, user: string}} message
-   */
-  const receiveMessage = (message) => {
-    const typeMessage = `${message.type}`;
-
-    console.log('Received message!', typeMessage)
-
-    if (typeMessage.includes("image") || typeMessage.includes("video"))
-      return receiveMediaMessage(message);
-
-    return receivedTextMessage(message)
-  }
-
-  /**
-   * Function to receive the data(media) from the web server
-   * @param {{message: string, type: string, name: string, user: string}} message
-   */
-  const receiveMediaMessage = (message) => {
-    const blob = new Blob([message.message], {
-      type: message.type,
-    });
-
-    const url = URL.createObjectURL(blob);
-
-    return addMessageInDOM(message.type, message.message, url, message.user);
-  }
-
-  /**
-   * Function to receive the data(text) from the web server
-   * @param {{message: string, type: string, name: string, user: string}} message
-   */
-  const receivedTextMessage = (message) => {
-    return addMessageInDOM(message.type, message.message, "", message.user);
-  }
-
-  const sendTextMessage = () => {
-    socket.emit(`room-${idRoom}`, {
-      message: input,
-      type: "text",
-      user: name,
-    });
-
-    console.log('send message with success!')
-
-    addMessageInDOM("text", input, "", 'Eu');
-
-    document.getElementById("input").value = "";
-    input = null;
-  }
-
-  const sendMediaMessage = () => {
-    const copyFiles = Array.from(files);
-
-    files = [];
-
-    copyFiles.forEach(file => {
-      const fileName = file.name;
-      const fileType = file.type;
-
-      const fileReader = new FileReader();
-
-      fileReader.readAsArrayBuffer(file);
-
-      fileReader.onload = () => {
-        const blob = new Blob([fileReader.result], {
-          type: fileType
-        });
-        const url = URL.createObjectURL(blob);
-
-        addMessageInDOM(fileType, fileReader.result, url, 'Eu');
-
-        socket.emit(`room-${idRoom}`, {
-          message: fileReader.result,
-          name: fileName,
-          type: fileType,
-          user: name,
-        });
-      };
-    })
-
-    console.log('send message with success!')
-  }
-
-  const addMessageInDOM = (type, message, url, origin) => {
-    if (origin === 'Eu')
-      document.getElementById("input").value = "";
-
-    const messages = document.getElementById("messages");
-    const el = document.createElement("li");
-
-    const divMessageUser = document.createElement('div')
-
-    const nameUser = document.createElement('h3')
-    nameUser.textContent = origin
-
-    divMessageUser.appendChild(nameUser)
-
-    if (type === "text") {
-      const elText = document.createElement('p')
-
-      elText.textContent = message;
-
-      if (message === "Usuário entrou no chat")
-        elText.classList.add("new-user");
-
-      divMessageUser.appendChild(elText)
-
-      el.appendChild(divMessageUser);
-    }
-
-    if (type.includes('mp4')) {
-      const elVideo = document.createElement("video");
-
-      elVideo.setAttribute("src", url);
-      elVideo.setAttribute("controls", "");
-
-      divMessageUser.appendChild(elVideo)
-
-      el.appendChild(elVideo);
-    }
-
-    if (
-      type.includes('png') ||
-      type.includes('webp') ||
-      type.includes('jpeg')
-    ) {
-      const elImage = document.createElement("img");
-
-      elImage.setAttribute("src", url);
-
-      divMessageUser.appendChild(elImage)
-
-      el.appendChild(divMessageUser);
-    }
-
-    messages.firstElementChild.appendChild(el);
-    messages.firstElementChild.appendChild(document.createElement("br"));
-
-    scrollToEnd()
-  }
-
-  const scrollToEnd = () => {
-    document
-      .getElementsByTagName("html")[0]
-      .scrollTo(
-        0,
-        document.getElementsByClassName("messages")[0].scrollHeight
-      );
-  }
-
-  const setUpChat = () => {
-    socket.on(`data-${idRoom}`, receiveMessage);
-
-    const inputText = document.getElementById("input")
-    const inputMedia = document.getElementById("input-file")
-
-    const buttonSendMessage = document.getElementById("send-message")
-
-    inputText.addEventListener("input", e => {
-      input = e.target.value;
-    });
-
-    inputMedia.addEventListener("change", e => {
-      files = e.currentTarget.files;
-    });
-
-    buttonSendMessage.addEventListener("click", e => {
-      return sendMessage()
-    });
-
-    document.addEventListener("keypress", e => {
-      if (e.key === "Enter")
-        return sendMessage();
-    });
-  }
-
-  setUpChat();
-
-</script>
 
 </html>

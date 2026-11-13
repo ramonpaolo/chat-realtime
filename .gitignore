@@ -1,5 +1,9 @@
 .env
 /dist
+.test-dist
 /node_modules
+coverage
+*.log
+.DS_Store
 
-*.js
+test/**/*.js

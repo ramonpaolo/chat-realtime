@@ -1,160 +1,118 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
-
-  <meta name="description" content="Join to realtime-chat for free, to share files and messages anonymous" />
-  <meta name="keywords" content="realtime-chat chat, anonymous, free share, communities" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4eee2" />
+  <meta name="description" content="Um chat anônimo e temporário. Cria uma sala, manda o link e conversem. Sem cadastro e sem mensagens salvas." />
+  <meta property="og:title" content="chat realtime" />
+  <meta property="og:description" content="Um chat anônimo e temporário. Sem cadastro, sem histórico." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/logo.svg" />
 
-  <meta name="author" content="Ramon Paolo Maram" />
-  <meta name="publisher" content="Chat Realtime(github.com/ramonpaolo/chat-realtime)" />
+  <title>chat realtime — entra na conversa</title>
 
-  <meta name="image_src" content="/assets/chat-room-logo.png" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Real-time Chat" />
-  <meta name="twitter:description" content="Join to realtime-chat for free, to share files and messages anonymous" />
-
-  <meta name="og:title" content="Real-time Chat" />
-  <meta name="og:description" content="Join to realtime-chat for free, to share files and messages anonymous" />
-  <meta name="og:image" content="/assets/chat-room-logo.png" />
-
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet" />
-
-  <style>
-    :root {
-      --color-button: #2b2b2b;
-      --color-text: #676767;
-      --width-button: 240px;
-      --heigth-button: 60px;
-    }
-
-    body {
-      font-family: "Roboto";
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-
-      overflow: hidden;
-    }
-
-    .container {
-      display: block;
-      width: 100vw;
-      height: 80vh;
-      margin-top: 10%;
-      margin-left: 10%;
-      margin-right: 10%;
-      margin-bottom: 10%;
-    }
-
-    .buttons {
-      display: flex;
-      margin-top: 20%;
-      margin-left: 45%;
-      text-align: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    button {
-      width: var(--width-button);
-      height: var(--heigth-button);
-      margin-top: 12px;
-      border: 2px var(--color-button) solid;
-      border-radius: 8px;
-      background-color: var(--color-button);
-      color: white;
-      font-size: 26px;
-      font-family: "Roboto";
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    h1:first-of-type {
-      font-size: 48px;
-      font-weight: bold;
-      text-decoration: underline;
-      margin-bottom: 0;
-      color: var(--color-button);
-    }
-
-    h2:first-of-type {
-      font-size: 32px;
-      font-weight: bold;
-      margin-top: 0;
-      color: var(--color-text);
-    }
-
-    input {
-      margin-top: 12px;
-      width: var(--width-button);
-      height: var(--heigth-button);
-      border: 2px var(--color-button) solid;
-      border-radius: 8px;
-      background-color: white;
-      color: var(--color-button);
-      font-size: 26px;
-      font-family: "Roboto";
-      font-weight: bold;
-      cursor: pointer;
-      letter-spacing: 20px;
-      box-sizing: border-box;
-      padding: 0px 12px;
-      color: var(--color-text);
-    }
-  </style>
-
-  <title>Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css?v=5" />
 </head>
 
-<body>
-  <div class="container">
-    <h1>Welcome to the Room Free</h1>
-    <h2>Share message and files, free</h2>
-    <div class="buttons">
-      <button id="create-room" type="menu" onclick="createRoom()">Create Room</button>
-    </div>
-  </div>
+<body class="landing-page">
+  <header class="landing-header">
+    <a class="brand" href="/" aria-label="chat realtime, início">
+      <img src="/logo.svg" alt="" class="brand-mark" width="36" height="36" />
+      <span class="brand-name">chat realtime</span>
+      <span class="brand-dot" aria-hidden="true"></span>
+    </a>
+
+    <nav class="landing-nav" aria-label="Navegação">
+      <span class="sticker">sem cadastro</span>
+      <a class="nav-link" href="https://github.com/ramonpaolo/chat-realtime" target="_blank" rel="noopener noreferrer">
+        GitHub <span aria-hidden="true">↗</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="landing-main">
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="hero-kicker"><span aria-hidden="true">✳</span> um chat anônimo e temporário</p>
+
+      <h1 id="hero-title" class="hero-title">
+        Entra na <span class="marker">conversa</span>.
+      </h1>
+
+      <p class="hero-description">
+        Cria uma sala, manda o link pra alguém e conversem.
+        Sem cadastro, sem banco de dados e sem mensagens salvas
+        depois que a sala esvazia.
+      </p>
+
+      <ul class="feature-list" aria-label="O que você não precisa">
+        <li><span aria-hidden="true">✳</span> sem cadastro</li>
+        <li><span aria-hidden="true">✳</span> sem histórico</li>
+        <li><span aria-hidden="true">✳</span> sem enrolação</li>
+      </ul>
+
+      <p class="privacy-note">as mensagens ficam na memória. a sala some quando fica vazia.</p>
+
+      <span class="hero-star" aria-hidden="true">✳</span>
+    </section>
+
+    <section class="entry-card" aria-labelledby="entry-title">
+      <div class="entry-head">
+        <span class="entry-eyebrow" id="entry-eyebrow">sala nova</span>
+        <h2 id="entry-title">Cria uma sala</h2>
+        <p id="entry-subtitle">Escolhe um nome e começa.</p>
+      </div>
+
+      <div class="mode-switch" role="tablist" aria-label="Criar ou entrar em uma sala">
+        <button type="button" class="mode-btn is-active" data-mode="create" role="tab" aria-selected="true">
+          Criar sala
+        </button>
+        <button type="button" class="mode-btn" data-mode="join" role="tab" aria-selected="false">
+          Entrar
+        </button>
+      </div>
+
+      <form id="entry-form" novalidate>
+        <label class="field">
+          <span>Seu nome</span>
+          <input id="name-input" name="name" type="text" maxlength="24" autocomplete="nickname" placeholder="Como te chamam?" />
+        </label>
+
+        <label class="field is-hidden" id="code-field">
+          <span>Código da sala</span>
+          <input id="code-input" name="room" type="text" maxlength="64" autocomplete="off" spellcheck="false" placeholder="cola o código ou o link" />
+        </label>
+
+        <p id="form-error" class="form-error is-hidden" role="alert"></p>
+
+        <button type="submit" id="entry-submit" class="btn btn-primary btn-block">
+          <span class="btn-label" id="entry-submit-label">Criar sala</span>
+          <span class="btn-spinner is-hidden" aria-hidden="true"></span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+      </form>
+
+      <p class="entry-foot">nada é salvo. nada fica.</p>
+    </section>
+  </main>
+
+  <footer class="landing-footer">
+    <p>
+      <strong>chat realtime</strong>
+      <span class="footer-sep">·</span>
+      feito por <a href="https://github.com/ramonpaolo" target="_blank" rel="noopener noreferrer">Ramon</a>
+      <span class="footer-sep">·</span>
+      <a href="https://zenifra.com" target="_blank" rel="noopener noreferrer">hospedado na Zenifra</a>
+    </p>
+    <p class="footer-tech">node + socket.io + ejs</p>
+  </footer>
+
+  <script src="/js/landing.js?v=5" defer></script>
 </body>
-<script>
-  const BASE_URL = window.location.hostname
-
-  const createRoom = async () => {
-    console.log('Creating room...')
-
-    const response = await fetch(`/create-room`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    if (response.status === 201) {
-      console.log('Room create with success!')
-
-      const { data } = await response.json()
-
-      const idRoom = data.id;
-
-      return window.location.assign(
-        `/room/${idRoom}`
-      );
-    }
-
-    console.error('Room not created!')
-  }
-</script>
 
 </html>
