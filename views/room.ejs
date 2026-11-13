@@ -4,33 +4,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#070b13" />
-  <meta name="description" content="Sala de chat em tempo real, efêmera e sem cadastro." />
+  <meta name="theme-color" content="#f4eee2" />
+  <meta name="description" content="Sala de chat anônima e temporária do chat realtime." />
   <meta name="robots" content="noindex, nofollow" />
 
-  <title>Sala <%= roomId %> — Chat Realtime</title>
+  <title>sala <%= roomId %> — chat realtime</title>
 
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/app.css?v=2" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css?v=5" />
 </head>
 
 <body class="chat-page" data-room="<%= roomId %>">
   <%- include("partials/icons") %>
 
-  <div class="page-bg page-bg-subtle" aria-hidden="true">
-    <span class="orb orb-mint"></span>
-    <span class="orb orb-violet"></span>
-  </div>
-
   <div class="chat-shell">
     <aside id="sidebar" class="chat-sidebar" aria-label="Informações da sala">
       <div class="sidebar-head">
-        <a class="brand" href="/" aria-label="Chat Realtime, início">
-          <img src="/logo.svg" alt="" class="brand-mark" width="34" height="34" />
-          <span class="brand-name">Chat Realtime</span>
+        <a class="brand brand-light" href="/" aria-label="chat realtime, início">
+          <img src="/logo.svg" alt="" class="brand-mark" width="32" height="32" />
+          <span class="brand-name">chat realtime</span>
         </a>
         <button type="button" id="close-sidebar" class="icon-btn sidebar-close" aria-label="Fechar menu">
           <svg class="icon"><use href="#icon-close"></use></svg>
@@ -38,21 +33,21 @@
       </div>
 
       <section class="room-card" aria-labelledby="room-card-title">
-        <span class="room-card-label" id="room-card-title">Sala atual</span>
+        <span class="room-card-label" id="room-card-title">sala atual</span>
         <div class="room-card-code">
           <code id="sidebar-room-code"><%= roomId %></code>
           <button type="button" id="copy-room" class="icon-btn icon-btn-sm" aria-label="Copiar código da sala" title="Copiar código">
             <svg class="icon icon-sm"><use href="#icon-copy"></use></svg>
           </button>
         </div>
-        <p>Compartilhe o link ou o código. Quem tiver acesso entra na conversa.</p>
+        <p>manda o link pra alguém. quem entrar, entra na conversa.</p>
       </section>
 
       <section class="members-section" aria-labelledby="members-title">
         <div class="section-line">
           <h2 id="members-title">
             <svg class="icon icon-xs"><use href="#icon-users"></use></svg>
-            Na sala
+            quem tá aqui
           </h2>
           <span id="member-count" class="count-badge">0</span>
         </div>
@@ -63,7 +58,7 @@
 
       <div class="sidebar-note">
         <svg class="icon icon-sm"><use href="#icon-lock"></use></svg>
-        <p>Mensagens só na memória. A sala expira após 1 hora sem ninguém.</p>
+        <p>as mensagens ficam na memória. a sala some depois de 1 hora vazia.</p>
       </div>
 
       <div class="sidebar-foot">
@@ -71,9 +66,7 @@
           <svg class="icon icon-sm"><use href="#icon-close"></use></svg>
           Sair da sala
         </button>
-        <a class="sidebar-hosted" href="https://zenifra.com" target="_blank" rel="noopener noreferrer">
-          Hospedado na Zenifra
-        </a>
+        <a class="sidebar-hosted" href="https://zenifra.com" target="_blank" rel="noopener noreferrer">hospedado na Zenifra</a>
       </div>
     </aside>
 
@@ -86,14 +79,14 @@
         </button>
 
         <div class="chat-heading">
-          <span class="chat-kicker">Sala efêmera</span>
+          <span class="chat-kicker">sala</span>
           <h1>#<span id="header-room-code"><%= roomId %></span></h1>
         </div>
 
         <div class="chat-header-actions">
           <span id="connection-pill" class="connection-pill is-connecting">
             <span class="connection-dot"></span>
-            <span id="connection-label">Conectando...</span>
+            <span id="connection-label">conectando...</span>
           </span>
           <button type="button" id="copy-link" class="icon-btn" aria-label="Copiar link da sala" title="Copiar link">
             <svg class="icon"><use href="#icon-copy"></use></svg>
@@ -103,7 +96,7 @@
 
       <div id="connection-banner" class="connection-banner is-hidden" role="status">
         <svg class="icon icon-sm"><use href="#icon-alert"></use></svg>
-        <span id="connection-banner-text">Você está offline. Tentando reconectar...</span>
+        <span id="connection-banner-text">a conexão caiu. tentando de novo...</span>
         <button type="button" id="reconnect-button" class="btn btn-soft btn-sm">
           <svg class="icon icon-xs"><use href="#icon-refresh"></use></svg>
           Reconectar
@@ -115,8 +108,8 @@
           <span class="empty-icon">
             <svg class="icon"><use href="#icon-chat"></use></svg>
           </span>
-          <h2>A conversa começa aqui</h2>
-          <p>Envie a primeira mensagem e convide alguém com o código da sala.</p>
+          <h2>Ninguém falou nada ainda.</h2>
+          <p>Manda a primeira e quebra o gelo.</p>
           <button type="button" id="empty-copy" class="btn btn-soft btn-sm">
             <svg class="icon icon-xs"><use href="#icon-copy"></use></svg>
             Copiar link da sala
@@ -126,7 +119,7 @@
       </section>
 
       <button type="button" id="scroll-bottom" class="scroll-bottom">
-        Novas mensagens
+        novas mensagens
         <svg class="icon icon-sm"><use href="#icon-arrow-down"></use></svg>
       </button>
 
@@ -142,16 +135,16 @@
               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,application/pdf,text/plain" />
           </label>
 
-          <textarea id="message-input" rows="1" maxlength="1000" placeholder="Escreva uma mensagem..." aria-label="Mensagem" disabled></textarea>
+          <textarea id="message-input" rows="1" maxlength="1000" placeholder="Manda uma mensagem..." aria-label="Mensagem" disabled></textarea>
 
-          <button type="submit" id="send-button" class="send-btn" disabled aria-label="Enviar mensagem" title="Enviar (Enter)">
+          <button type="submit" id="send-button" class="send-btn" disabled aria-label="Mandar mensagem" title="Mandar (Enter)">
             <svg class="icon"><use href="#icon-send"></use></svg>
           </button>
         </form>
 
         <div class="composer-meta">
           <span id="char-count">0 / 1000</span>
-          <span class="composer-hint">Enter envia · Shift + Enter quebra linha</span>
+          <span class="composer-hint">Enter manda · Shift + Enter quebra linha</span>
         </div>
       </footer>
     </main>
@@ -159,36 +152,36 @@
 
   <div id="join-overlay" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="join-title">
     <div class="modal-card">
-      <img src="/logo.svg" alt="" class="modal-logo" width="46" height="46" />
-      <span class="eyebrow">Sala <code><%= roomId %></code></span>
-      <h2 id="join-title">Entre na conversa</h2>
-      <p id="join-subtitle" class="modal-subtitle">Escolha como você quer aparecer nesta sala.</p>
+      <img src="/logo.svg" alt="" class="modal-logo" width="44" height="44" />
+      <span class="eyebrow">sala <code><%= roomId %></code></span>
+      <h2 id="join-title">Entra na conversa</h2>
+      <p id="join-subtitle" class="modal-subtitle">Como você quer aparecer?</p>
 
       <form id="join-form" novalidate>
         <label class="field">
           <span>Seu nome</span>
-          <input id="join-name" type="text" maxlength="24" autocomplete="nickname" placeholder="Seu nome na sala" />
+          <input id="join-name" type="text" maxlength="24" autocomplete="nickname" placeholder="Como te chamam?" />
         </label>
         <p id="join-error" class="form-error is-hidden" role="alert"></p>
         <button type="submit" id="join-submit" class="btn btn-primary btn-block">
-          <span class="btn-label" id="join-submit-label">Entrar na sala</span>
+          <span class="btn-label" id="join-submit-label">Entrar</span>
           <span class="btn-spinner is-hidden" aria-hidden="true"></span>
-          <svg class="icon btn-arrow"><use href="#icon-arrow-right"></use></svg>
+          <span class="btn-arrow" aria-hidden="true">→</span>
         </button>
       </form>
 
-      <a class="modal-back" href="/">Voltar para o início</a>
+      <a class="modal-back" href="/">voltar pro início</a>
     </div>
   </div>
 
   <div id="toast-stack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
 
   <noscript>
-    <div class="noscript-message">O Chat Realtime precisa de JavaScript para funcionar.</div>
+    <div class="noscript-message">O chat realtime precisa de JavaScript para funcionar.</div>
   </noscript>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/room.js?v=2" defer></script>
+  <script src="/js/room.js?v=5" defer></script>
 </body>
 
 </html>

@@ -228,9 +228,9 @@
 
     const names = entries.map((entry) => entry.name)
     let text = ""
-    if (names.length === 1) text = names[0] + " está digitando"
-    else if (names.length === 2) text = names[0] + " e " + names[1] + " estão digitando"
-    else text = names[0] + ", " + names[1] + " e mais " + (names.length - 2) + " estão digitando"
+    if (names.length === 1) text = names[0] + " tá digitando"
+    else if (names.length === 2) text = names[0] + " e " + names[1] + " tão digitando"
+    else text = names[0] + ", " + names[1] + " e mais " + (names.length - 2) + " tão digitando"
 
     const label = document.createElement("span")
     label.textContent = text
@@ -348,7 +348,7 @@
       meta.className = "message-meta"
       const author = document.createElement("span")
       author.className = "message-author"
-      author.textContent = own ? "Você" : message.user.name
+      author.textContent = own ? "você" : message.user.name
       const time = document.createElement("span")
       time.className = "message-time"
       time.textContent = formatTime(message.createdAt)
@@ -475,7 +475,7 @@
     if (pending.timer) clearTimeout(pending.timer)
     pending.timer = setTimeout(() => {
       if (!state.pending.has(clientId)) return
-      markFailed(clientId, "O servidor não confirmou o envio. Tente novamente.")
+      markFailed(clientId, "o servidor não confirmou o envio. tenta de novo.")
     }, 12000)
   }
 
@@ -533,13 +533,13 @@
         })
       })
       .catch(() => {
-        markFailed(clientId, "Não foi possível ler o arquivo.")
+        markFailed(clientId, "não deu pra ler o arquivo.")
       })
   }
 
   function sendCurrent() {
     if (!state.joined || !state.socket.connected) {
-      showToast("Aguarde a conexão com a sala.", "warning")
+      showToast("espera a conexão com a sala.", "warning")
       return
     }
 
@@ -548,7 +548,7 @@
 
     if (!text && !files.length) return
     if (Array.from(text).length > MAX_TEXT) {
-      showToast("A mensagem passou do limite de 1.000 caracteres.", "error")
+      showToast("a mensagem passou de 1.000 caracteres.", "error")
       return
     }
 
@@ -602,12 +602,12 @@
     const files = Array.from(fileList || [])
     for (const file of files) {
       if (state.selectedFiles.length >= MAX_FILES) {
-        showToast("Você pode anexar no máximo 3 arquivos por vez.", "warning")
+        showToast("no máximo 3 arquivos por vez.", "warning")
         break
       }
       if (!isAllowedFile(file)) {
         showToast(
-          "Use imagem, MP4/WebM, PDF ou texto de até 4 MB.",
+          "manda imagem, MP4/WebM, PDF ou texto de até 4 MB.",
           "error",
         )
         continue
@@ -643,7 +643,7 @@
     refs.joinSubmit.disabled = loading
     const spinner = refs.joinSubmit.querySelector(".btn-spinner")
     if (spinner) spinner.classList.toggle("is-hidden", !loading)
-    refs.joinSubmitLabel.textContent = loading ? "Entrando..." : "Entrar na sala"
+    refs.joinSubmitLabel.textContent = loading ? "entrando..." : "Entrar"
   }
 
   function showJoinError(message) {
@@ -669,7 +669,7 @@
     if (!socket.connected) {
       state.autoJoinName = name
       setJoinLoading(true)
-      refs.joinSubtitle.textContent = "Conectando ao servidor..."
+      refs.joinSubtitle.textContent = "conectando..."
       return
     }
 
@@ -679,9 +679,9 @@
 
     if (!silent) {
       showJoinOverlay()
-      refs.joinSubtitle.textContent = "Entrando na sala..."
+      refs.joinSubtitle.textContent = "entrando..."
     } else {
-      setConnection("connecting", "Reconectando...")
+      setConnection("connecting", "reconectando...")
     }
 
     socket.emit("room:join", { roomId, name })
@@ -709,12 +709,12 @@
       } catch {
         // fallback abaixo
       }
-      showToast("Não foi possível copiar. Selecione manualmente.", "error")
+      showToast("não deu pra copiar. seleciona manualmente.", "error")
     }
   }
 
   function copyRoomLink() {
-    copyText(window.location.origin + "/room/" + roomId, "Link da sala copiado.")
+    copyText(window.location.origin + "/room/" + roomId, "link copiado.")
   }
 
   function closeSidebar() {
@@ -751,7 +751,7 @@
     hideJoinOverlay()
     setJoinLoading(false)
     hideBanner()
-    setConnection("online", "Online")
+    setConnection("online", "online")
     clearTyping()
     clearPending()
     renderAllMessages()
@@ -768,7 +768,7 @@
     state.joining = false
     setJoinLoading(false)
     showJoinOverlay()
-    refs.joinSubtitle.textContent = "Escolha como você quer aparecer nesta sala."
+    refs.joinSubtitle.textContent = "Como você quer aparecer?"
     showJoinError(payload?.message || "Não foi possível entrar na sala.")
     refs.joinName.focus()
   }
@@ -788,7 +788,7 @@
   /* ── Socket lifecycle ─────────────────────────────────────────── */
 
   socket.on("connect", () => {
-    setConnection("online", "Online")
+    setConnection("online", "online")
     hideBanner()
 
     if (state.joined && state.self) {
@@ -804,30 +804,30 @@
   socket.on("disconnect", (reason) => {
     if (state.leaving) return
 
-    setConnection("offline", "Offline")
+    setConnection("offline", "offline")
     setComposerEnabled(false)
     clearTyping()
 
     if (reason === "io server disconnect") {
-      showBanner("O servidor encerrou a conexão. Clique em reconectar.")
+      showBanner("o servidor encerrou a conexão. clica em reconectar.")
     } else {
-      showBanner("Conexão perdida. Tentando reconectar...")
+      showBanner("a conexão caiu. tentando de novo...")
     }
   })
 
   socket.on("connect_error", () => {
-    setConnection("offline", "Offline")
-    showBanner("Não foi possível conectar. Verifique sua internet.")
+    setConnection("offline", "offline")
+    showBanner("não deu pra conectar. confere sua internet.")
 
     if (!state.joined) {
       setJoinLoading(false)
-      refs.joinSubtitle.textContent = "Conectando ao servidor..."
+      refs.joinSubtitle.textContent = "conectando..."
     }
   })
 
   socket.io.on("reconnect_attempt", () => {
-    setConnection("connecting", "Reconectando...")
-    showBanner("Reconectando à sala...")
+    setConnection("connecting", "reconectando...")
+    showBanner("reconectando...")
   })
 
   socket.on("room:state", handleRoomState)
@@ -970,7 +970,7 @@
   })
 
   refs.copyRoom.addEventListener("click", () => {
-    copyText(roomId, "Código da sala copiado.")
+    copyText(roomId, "código copiado.")
   })
 
   refs.copyLink.addEventListener("click", copyRoomLink)
@@ -983,8 +983,8 @@
   refs.sidebarBackdrop.addEventListener("click", closeSidebar)
 
   refs.reconnectButton.addEventListener("click", () => {
-    setConnection("connecting", "Reconectando...")
-    showBanner("Tentando reconectar...")
+    setConnection("connecting", "reconectando...")
+    showBanner("tentando de novo...")
     if (!socket.connected) socket.connect()
     else if (!state.joined && state.autoJoinName) attemptJoin(state.autoJoinName, true)
   })
@@ -999,7 +999,7 @@
   resizeTextarea()
   setComposerEnabled(false)
   setJoinLoading(false)
-  setConnection("connecting", "Conectando...")
+  setConnection("connecting", "conectando...")
 
   try {
     const storedName = sessionStorage.getItem(NAME_KEY)
@@ -1007,7 +1007,7 @@
       refs.joinName.value = storedName
       state.autoJoinName = storedName
       setJoinLoading(true)
-      refs.joinSubtitle.textContent = "Conectando ao servidor..."
+      refs.joinSubtitle.textContent = "conectando..."
     }
   } catch {
     // sem sessionStorage; o formulário começa vazio

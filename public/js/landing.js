@@ -19,18 +19,18 @@
 
   const modes = {
     create: {
-      eyebrow: "Sala nova",
-      title: "Crie sua sala",
-      subtitle: "Escolha um nome e comece a conversar.",
+      eyebrow: "sala nova",
+      title: "Cria uma sala",
+      subtitle: "Escolhe um nome e começa.",
       label: "Criar sala",
-      placeholder: "Como podemos te chamar?",
+      placeholder: "Como te chamam?",
     },
     join: {
-      eyebrow: "Entrar",
-      title: "Entrar em uma sala",
-      subtitle: "Use o código que alguém compartilhou com você.",
-      label: "Entrar na sala",
-      placeholder: "Como podemos te chamar?",
+      eyebrow: "entrar",
+      title: "Entrar numa sala",
+      subtitle: "Cola o código ou o link que te mandaram.",
+      label: "Entrar",
+      placeholder: "Como te chamam?",
     },
   }
 
@@ -68,8 +68,8 @@
     spinner.classList.toggle("is-hidden", !value)
     submitLabel.textContent = value
       ? mode === "create"
-        ? "Criando..."
-        : "Entrando..."
+        ? "criando..."
+        : "entrando..."
       : modes[mode].label
   }
 
@@ -115,7 +115,7 @@
 
     const name = nameInput.value.trim()
     if (Array.from(name).length < 2 || Array.from(name).length > 24) {
-      showError("Escolha um nome com 2 a 24 caracteres.")
+      showError("Escolhe um nome com 2 a 24 caracteres.")
       nameInput.focus()
       return
     }
@@ -124,7 +124,7 @@
     if (mode === "join") {
       roomCode = codeFromInput(codeInput.value)
       if (!roomCode) {
-        showError("Código inválido. Cole o código da sala ou o link completo.")
+        showError("Código inválido. Cola o código da sala ou o link completo.")
         codeInput.focus()
         return
       }
@@ -143,7 +143,7 @@
         const payload = await response.json().catch(() => null)
 
         if (!response.ok || !payload?.data?.id) {
-          throw new Error(payload?.message || "Não foi possível criar a sala agora.")
+          throw new Error(payload?.message || "Não deu pra criar a sala agora.")
         }
 
         navigating = true
@@ -156,18 +156,18 @@
       })
 
       if (response.status === 404) {
-        throw new Error("Sala não encontrada. Confira o código e tente novamente.")
+        throw new Error("Sala não encontrada. Confere o código.")
       }
 
       if (!response.ok) {
         const payload = await response.json().catch(() => null)
-        throw new Error(payload?.message || "Não foi possível entrar na sala agora.")
+        throw new Error(payload?.message || "Não deu pra entrar na sala agora.")
       }
 
       navigating = true
       window.location.assign("/room/" + encodeURIComponent(roomCode))
     } catch (error) {
-      showError(error instanceof Error ? error.message : "Algo deu errado. Tente novamente.")
+      showError(error instanceof Error ? error.message : "Algo deu errado. Tenta de novo.")
     } finally {
       if (!navigating) setLoading(false)
     }

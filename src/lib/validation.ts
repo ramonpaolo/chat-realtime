@@ -20,14 +20,14 @@ const CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g
 const WHITESPACE = /\s+/g
 
 const COLORS = [
-    "#13f4b0",
-    "#a78bfa",
-    "#67e8f9",
-    "#fbbf24",
-    "#f472b6",
-    "#a3e635",
-    "#fb7185",
-    "#c084fc",
+    "#ff7a59",
+    "#f2b544",
+    "#8ab17d",
+    "#5c8bd6",
+    "#c56b8a",
+    "#9a7bc8",
+    "#d98b4a",
+    "#6aa6a1",
 ]
 
 const ALLOWED_FILE_TYPES = new Set([

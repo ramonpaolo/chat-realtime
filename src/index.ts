@@ -281,7 +281,7 @@ io.on("connection", (socket) => {
             socket.data.roomId = roomId
             socket.data.member = member
 
-            const systemMessage = rooms.addSystem(room, `${member.name} entrou na sala`)
+            const systemMessage = rooms.addSystem(room, `${member.name} entrou`)
             const state: RoomState = {
                 room: { id: room.id, createdAt: room.createdAt },
                 self: member,
@@ -406,7 +406,7 @@ io.on("connection", (socket) => {
         const room = rooms.getRoom(roomId)
         if (!room) return
 
-        const systemMessage = rooms.addSystem(room, `${member.name} saiu da sala`)
+        const systemMessage = rooms.addSystem(room, `${member.name} saiu`)
         io.to(roomId).emit("message:new", systemMessage)
         io.to(roomId).emit("members:update", rooms.members(room))
     })

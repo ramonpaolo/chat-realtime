@@ -4,107 +4,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#070b13" />
-  <meta name="description" content="Chat em tempo real, sem cadastro e sem histórico em banco. Crie uma sala, compartilhe o código e converse." />
-  <meta property="og:title" content="Chat Realtime — salas efêmeras" />
-  <meta property="og:description" content="Conversas em tempo real que não deixam rastros. Sem cadastro. Sem banco de dados." />
+  <meta name="theme-color" content="#f4eee2" />
+  <meta name="description" content="Um chat anônimo e temporário. Cria uma sala, manda o link e conversem. Sem cadastro e sem mensagens salvas." />
+  <meta property="og:title" content="chat realtime" />
+  <meta property="og:description" content="Um chat anônimo e temporário. Sem cadastro, sem histórico." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/logo.svg" />
 
-  <title>Chat Realtime — salas efêmeras</title>
+  <title>chat realtime — entra na conversa</title>
 
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/app.css?v=2" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css?v=5" />
 </head>
 
 <body class="landing-page">
-  <%- include("partials/icons") %>
-
-  <div class="page-bg" aria-hidden="true">
-    <span class="orb orb-mint"></span>
-    <span class="orb orb-violet"></span>
-  </div>
-
   <header class="landing-header">
-    <a class="brand" href="/" aria-label="Chat Realtime, início">
-      <img src="/logo.svg" alt="" class="brand-mark" width="38" height="38" />
-      <span class="brand-name">Chat Realtime</span>
-      <span class="brand-tag">efêmero</span>
+    <a class="brand" href="/" aria-label="chat realtime, início">
+      <img src="/logo.svg" alt="" class="brand-mark" width="36" height="36" />
+      <span class="brand-name">chat realtime</span>
+      <span class="brand-dot" aria-hidden="true"></span>
     </a>
 
     <nav class="landing-nav" aria-label="Navegação">
-      <span class="nav-pill">
-        <span class="live-dot"></span>
-        sem cadastro
-      </span>
+      <span class="sticker">sem cadastro</span>
       <a class="nav-link" href="https://github.com/ramonpaolo/chat-realtime" target="_blank" rel="noopener noreferrer">
-        GitHub
-        <svg class="icon icon-sm"><use href="#icon-arrow-right"></use></svg>
+        GitHub <span aria-hidden="true">↗</span>
       </a>
     </nav>
   </header>
 
   <main class="landing-main">
     <section class="hero" aria-labelledby="hero-title">
-      <span class="eyebrow">
-        <svg class="icon icon-xs"><use href="#icon-bolt"></use></svg>
-        chat em tempo real · 100% em memória
-      </span>
+      <p class="hero-kicker"><span aria-hidden="true">✳</span> um chat anônimo e temporário</p>
 
       <h1 id="hero-title" class="hero-title">
-        Conversas que
-        <span class="gradient-text">não deixam rastros.</span>
+        Entra na <span class="marker">conversa</span>.
       </h1>
 
       <p class="hero-description">
-        Crie uma sala, compartilhe o código e converse com quem estiver online.
-        Sem conta, sem banco de dados e sem complicação.
+        Cria uma sala, manda o link pra alguém e conversem.
+        Sem cadastro, sem banco de dados e sem mensagens salvas
+        depois que a sala esvazia.
       </p>
 
-      <ul class="feature-list">
-        <li class="feature">
-          <span class="feature-icon"><svg class="icon"><use href="#icon-check"></use></svg></span>
-          <div><strong>Sem cadastro</strong><span>Entre apenas com um nome.</span></div>
-        </li>
-        <li class="feature">
-          <span class="feature-icon"><svg class="icon"><use href="#icon-bolt"></use></svg></span>
-          <div><strong>Tempo real</strong><span>Mensagens na hora via Socket.io.</span></div>
-        </li>
-        <li class="feature">
-          <span class="feature-icon"><svg class="icon"><use href="#icon-file"></use></svg></span>
-          <div><strong>Arquivos e mídia</strong><span>Imagens, vídeos, PDFs e texto.</span></div>
-        </li>
-        <li class="feature">
-          <span class="feature-icon"><svg class="icon"><use href="#icon-users"></use></svg></span>
-          <div><strong>Efêmero de verdade</strong><span>Salas vazias expiram sozinhas.</span></div>
-        </li>
+      <ul class="feature-list" aria-label="O que você não precisa">
+        <li><span aria-hidden="true">✳</span> sem cadastro</li>
+        <li><span aria-hidden="true">✳</span> sem histórico</li>
+        <li><span aria-hidden="true">✳</span> sem enrolação</li>
       </ul>
 
-      <p class="privacy-note">
-        <svg class="icon icon-sm"><use href="#icon-lock"></use></svg>
-        As mensagens não são gravadas em banco. O histórico vive apenas na memória do servidor.
-      </p>
+      <p class="privacy-note">as mensagens ficam na memória. a sala some quando fica vazia.</p>
+
+      <span class="hero-star" aria-hidden="true">✳</span>
     </section>
 
     <section class="entry-card" aria-labelledby="entry-title">
-      <div class="entry-card-glow" aria-hidden="true"></div>
-
       <div class="entry-head">
-        <span class="entry-eyebrow" id="entry-eyebrow">Sala nova</span>
-        <h2 id="entry-title">Crie sua sala</h2>
-        <p id="entry-subtitle">Escolha um nome e comece a conversar.</p>
+        <span class="entry-eyebrow" id="entry-eyebrow">sala nova</span>
+        <h2 id="entry-title">Cria uma sala</h2>
+        <p id="entry-subtitle">Escolhe um nome e começa.</p>
       </div>
 
       <div class="mode-switch" role="tablist" aria-label="Criar ou entrar em uma sala">
         <button type="button" class="mode-btn is-active" data-mode="create" role="tab" aria-selected="true">
-          <svg class="icon icon-sm"><use href="#icon-plus"></use></svg>
           Criar sala
         </button>
         <button type="button" class="mode-btn" data-mode="join" role="tab" aria-selected="false">
-          <svg class="icon icon-sm"><use href="#icon-arrow-right"></use></svg>
           Entrar
         </button>
       </div>
@@ -112,12 +80,12 @@
       <form id="entry-form" novalidate>
         <label class="field">
           <span>Seu nome</span>
-          <input id="name-input" name="name" type="text" maxlength="24" autocomplete="nickname" placeholder="Como podemos te chamar?" />
+          <input id="name-input" name="name" type="text" maxlength="24" autocomplete="nickname" placeholder="Como te chamam?" />
         </label>
 
         <label class="field is-hidden" id="code-field">
           <span>Código da sala</span>
-          <input id="code-input" name="room" type="text" maxlength="64" autocomplete="off" spellcheck="false" placeholder="ex: 8f3a1c2b90" />
+          <input id="code-input" name="room" type="text" maxlength="64" autocomplete="off" spellcheck="false" placeholder="cola o código ou o link" />
         </label>
 
         <p id="form-error" class="form-error is-hidden" role="alert"></p>
@@ -125,29 +93,26 @@
         <button type="submit" id="entry-submit" class="btn btn-primary btn-block">
           <span class="btn-label" id="entry-submit-label">Criar sala</span>
           <span class="btn-spinner is-hidden" aria-hidden="true"></span>
-          <svg class="icon btn-arrow"><use href="#icon-arrow-right"></use></svg>
+          <span class="btn-arrow" aria-hidden="true">→</span>
         </button>
       </form>
 
-      <div class="entry-foot">
-        <svg class="icon icon-xs"><use href="#icon-lock"></use></svg>
-        Nada é salvo. Nada é rastreado.
-      </div>
+      <p class="entry-foot">nada é salvo. nada fica.</p>
     </section>
   </main>
 
   <footer class="landing-footer">
     <p>
-      <strong>Chat Realtime</strong>
+      <strong>chat realtime</strong>
       <span class="footer-sep">·</span>
-      <a href="https://zenifra.com" target="_blank" rel="noopener noreferrer">Hospedado na Zenifra</a>
+      feito por <a href="https://github.com/ramonpaolo" target="_blank" rel="noopener noreferrer">Ramon</a>
       <span class="footer-sep">·</span>
-      <a href="https://github.com/ramonpaolo/chat-realtime" target="_blank" rel="noopener noreferrer">Código aberto</a>
+      <a href="https://zenifra.com" target="_blank" rel="noopener noreferrer">hospedado na Zenifra</a>
     </p>
-    <p class="footer-tech">Node.js · Socket.io · EJS</p>
+    <p class="footer-tech">node + socket.io + ejs</p>
   </footer>
 
-  <script src="/js/landing.js?v=2" defer></script>
+  <script src="/js/landing.js?v=5" defer></script>
 </body>
 
 </html>
