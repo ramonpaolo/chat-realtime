@@ -2,6 +2,13 @@
 
 ![Realtime Chat](https://ik.imagekit.io/9t3dbkxrtl/realtime-chat_J9ZFNOPTf.gif?ik-sdk-version=javascript-1.4.3&updatedAt=1652364172872)
 
+[![Deploy na Zenifra](https://docs.zenifra.com/badge/deploy-pt.svg)](https://console.zenifra.com/deploy?repository=https://github.com/ramonpaolo/chat-realtime&port=3000&name=chat-realtime&branch=main&runtime=nodejs&version=22&start=yarn%20start&build=yarn%20build)
+[![Hospedado na Zenifra](https://img.shields.io/badge/hospedado%20na-Zenifra-13f4b0?style=flat-square)](https://chat-realtime.clients.zenifra.com)
+
+**Deploy / Implantar:** o badge abre o Console da Zenifra com este repositório, a porta `3000`, Node 22, `yarn build` e `yarn start` já preenchidos. O app está hospedado em [chat-realtime.clients.zenifra.com](https://chat-realtime.clients.zenifra.com). Veja a [documentação do botão](https://docs.zenifra.com/pt/docs/deploy/deploy-button).
+
+O repositório é público, então o deploy não exige conectar sua conta GitHub; o projeto criado usa deploy manual até você conectar o repositório para auto-deploy.
+
 ## Languages Translates
 - [Portuguese](#portuguese)
 - [English](#english)
@@ -51,7 +58,7 @@ The network use cryptograph peer-to-peer with HTTPS
 <div id="howexecute-english"/>
 
 # 📁 How Execute this Project?
-Requirements: NodeJs 14.17 LTS and Yarn
+Requirements: Node.js 22 and Yarn
 
 ```bash
 # clone the repositore
@@ -125,7 +132,7 @@ A rede usa criptografia de ponta a ponta com HTTPS
 <div id="howexecute-portuguese"/>
 
 # 📁 Como executar o projeto?
-Pré-requesitos: NodeJs 14.17 LTS e Yarn
+Pré-requisitos: Node.js 22 e Yarn
 
 ```bash
 # clonar repositório
