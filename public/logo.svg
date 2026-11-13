@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Chat Realtime">
+  <defs>
+    <linearGradient id="bubble" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#13f4b0" />
+      <stop offset=".55" stop-color="#38e8c8" />
+      <stop offset="1" stop-color="#a78bfa" />
+    </linearGradient>
+    <linearGradient id="shine" x1="24" y1="10" x2="40" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity=".5" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="17" fill="#0b1220" />
+  <rect x="1" y="1" width="62" height="62" rx="16" fill="none" stroke="#ffffff" stroke-opacity=".1" />
+  <path d="M16 20.5A7.5 7.5 0 0 1 23.5 13h17A7.5 7.5 0 0 1 48 20.5v13a7.5 7.5 0 0 1-7.5 7.5H31l-9.5 8v-8.6A7.5 7.5 0 0 1 16 33.5v-13Z" fill="url(#bubble)" />
+  <path d="M23 21.5h18" stroke="#062018" stroke-width="3.2" stroke-linecap="round" opacity=".75" />
+  <path d="M23 28.5h12" stroke="#062018" stroke-width="3.2" stroke-linecap="round" opacity=".55" />
+  <path d="M16 20.5A7.5 7.5 0 0 1 23.5 13h17A7.5 7.5 0 0 1 48 20.5v4.2c-8.4-1.9-21.9-.7-32 3.4v-4.6Z" fill="url(#shine)" />
+</svg>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070b13" />
+  <meta name="robots" content="noindex" />
+  <title><%= title %> — Chat Realtime</title>
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css?v=2" />
+</head>
+
+<body class="not-found-page">
+  <%- include("partials/icons") %>
+
+  <div class="page-bg" aria-hidden="true">
+    <span class="orb orb-mint"></span>
+    <span class="orb orb-violet"></span>
+  </div>
+
+  <main class="not-found-card">
+    <img src="/logo.svg" alt="" class="modal-logo" width="46" height="46" />
+    <span class="eyebrow">Chat Realtime</span>
+    <h1><%= title %></h1>
+    <p><%= message %></p>
+    <a href="<%= ctaHref %>" class="btn btn-primary">
+      <%= cta %>
+      <svg class="icon"><use href="#icon-arrow-right"></use></svg>
+    </a>
+  </main>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
-# Portfolio
+# Chat Realtime — salas efêmeras
 
-![Realtime Chat](https://ik.imagekit.io/9t3dbkxrtl/realtime-chat_J9ZFNOPTf.gif?ik-sdk-version=javascript-1.4.3&updatedAt=1652364172872)
+Chat em tempo real, sem cadastro e sem banco de dados. Cada sala vive em memória e desaparece quando fica vazia.
 
 [![Deploy na Zenifra](https://docs.zenifra.com/badge/deploy-pt.svg)](https://console.zenifra.com/deploy?repository=https://github.com/ramonpaolo/chat-realtime&port=3000&name=chat-realtime&branch=main&runtime=nodejs&version=22&start=yarn%20start&build=yarn%20build)
 [![Hospedado na Zenifra](https://img.shields.io/badge/hospedado%20na-Zenifra-13f4b0?style=flat-square)](https://chat-realtime.clients.zenifra.com)
@@ -8,6 +8,29 @@
 **Deploy / Implantar:** o badge abre o Console da Zenifra com este repositório, a porta `3000`, Node 22, `yarn build` e `yarn start` já preenchidos. O app está hospedado em [chat-realtime.clients.zenifra.com](https://chat-realtime.clients.zenifra.com). Veja a [documentação do botão](https://docs.zenifra.com/pt/docs/deploy/deploy-button).
 
 O repositório é público, então o deploy não exige conectar sua conta GitHub; o projeto criado usa deploy manual até você conectar o repositório para auto-deploy.
+
+![Chat Realtime — landing](docs/landing-v2.png)
+
+## Novidades na v2
+
+- **Salas isoladas de verdade:** cada conversa usa uma room do Socket.io; ninguém recebe mensagens de outra sala.
+- **Presença e digitação:** lista de pessoas online, nomes únicos, indicador de “está digitando” e mensagens de entrada/saída.
+- **Histórico em memória:** as últimas 100 mensagens de texto ficam na memória do servidor. Arquivos são transmitidos apenas para quem está online e não são persistidos.
+- **Interface responsiva:** landing, chat em tela cheia, sidebar móvel, tema escuro e foco em acessibilidade.
+- **Segurança:** CSP, headers de segurança, validação de nomes/mensagens/arquivos, limite de 4 MB por arquivo, até 3 anexos, limite de 30 pessoas por sala e rate-limit por socket/IP.
+- **Ciclo de vida:** salas vazias expiram após 1 hora; o servidor tem limite de salas e faz limpeza periódica.
+- **Operação:** healthcheck em `/healthz`, encerramento gracioso, Docker com Node 22 e deploy de um clique na Zenifra.
+
+![Sala de chat](docs/chat-v2.png)
+
+## Stack e segurança
+
+- TypeScript, Node.js 22+, Express 5, EJS e Socket.io.
+- Sem banco de dados: o estado é efêmero e local ao processo.
+- `maxHttpBufferSize` reduzido, uploads validados por MIME/tamanho e nomes de arquivo higienizados.
+- Rate-limit de mensagens (15/10 s), arquivos (4/30 s) e criação de salas (10/10 min por IP).
+- CSP com `script-src 'self'`, `frame-ancestors 'none'` e `object-src 'none'`.
+- Testes unitários de validação e do armazenamento de salas com `yarn test`.
 
 ## Languages Translates
 - [Portuguese](#portuguese)
